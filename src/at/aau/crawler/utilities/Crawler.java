@@ -47,7 +47,7 @@ public class Crawler {
             }
         }
 
-        linksToVisit.forEach(link -> visitedWebsites.add(extractLinksAndHeading(link, website.getDepth() + 1)));\
+        linksToVisit.forEach(link -> visitedWebsites.add(extractLinksAndHeading(link, website.getDepth() + 1)));
 
         if (!visitedWebsites.isEmpty() && visitedWebsites.get(0).getDepth() < maxDepth) {
             List<Website> w2 = new ArrayList<>();

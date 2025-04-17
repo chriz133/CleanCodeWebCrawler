@@ -11,7 +11,7 @@ public class MainProgram {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
         Website website = Crawler.extractLinksAndHeading("https://www.orf.at", 1);
-        List<String> domains = Arrays.stream(new String[]{"wien.orf.at"}).collect(Collectors.toList());
+        List<String> domains = Arrays.stream(new String[]{"wien.orf.at", "wetter.orf.at"}).collect(Collectors.toList());
 //        Crawler.trackVisitedWebsites(website, 3, domains);
 
         System.out.println(website);

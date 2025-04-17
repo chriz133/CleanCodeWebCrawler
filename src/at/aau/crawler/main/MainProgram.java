@@ -11,11 +11,10 @@ public class MainProgram {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
         Website website = Crawler.extractLinksAndHeading("https://www.orf.at", 1);
-        List<String> domains = Arrays.stream(new String[]{"wien.orf.at", "wetter.orf.at"}).collect(Collectors.toList());
-//        Crawler.trackVisitedWebsites(website, 3, domains);
+        List<String> domains = Arrays.stream(new String[]{"salzburg.orf.at", "wetter.orf.at"}).collect(Collectors.toList());
 
         System.out.println(website);
-        List<Website> websites = Crawler.trackVisitedWebsites(website, 2, domains);
+        List<Website> websites = Crawler.trackVisitedWebsites(website, 3, domains);
         for (Website website2 : websites) {
             System.out.println(website2);
         }

@@ -1,7 +1,8 @@
-package at.aau.crawler.main;
+package aau.crawler.main;
 
-import at.aau.crawler.model.Website;
-import at.aau.crawler.utilities.Crawler;
+
+import aau.crawler.model.Website;
+import aau.crawler.utilities.Crawler;
 
 import java.util.Arrays;
 import java.util.List;
@@ -10,11 +11,9 @@ import java.util.stream.Collectors;
 public class MainProgram {
     public static void main(String[] args) {
         long startTime = System.currentTimeMillis();
-        Website website = Crawler.extractLinksAndHeading("https://www.orf.at", 1);
-        List<String> domains = Arrays.stream(new String[]{"salzburg.orf.at", "wetter.orf.at"}).collect(Collectors.toList());
+        List<String> domains = Arrays.stream(new String[]{"wetter.orf.at", "sport.orf.at"}).collect(Collectors.toList());
 
-        System.out.println(website);
-        List<Website> websites = Crawler.trackVisitedWebsites(website, 3, domains);
+        List<Website> websites = Crawler.crawlWebsite("https://www.orf.at", 3, domains);
         for (Website website2 : websites) {
             System.out.println(website2);
         }

@@ -1,6 +1,6 @@
-package at.aau.crawler.utilities;
+package aau.crawler.utilities;
 
-import at.aau.crawler.model.Website;
+import aau.crawler.model.Website;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -14,6 +14,13 @@ import java.util.stream.Collectors;
 public class Crawler {
     private Crawler() {}
 
+
+    public static List<Website> crawlWebsite(String url, int maxDepth, List<String> domains) {
+        Website website = Crawler.extractLinksAndHeading(url, 1);
+        List<Website> websites = trackVisitedWebsites(website, maxDepth, domains);
+        websites.add(0, website);
+        return websites;
+    }
 
     public static Website extractLinksAndHeading(String url, int newDepth) {
         try {
@@ -37,26 +44,32 @@ public class Crawler {
     public static List<Website> trackVisitedWebsites(Website website, int maxDepth, List<String> domains) {
        List<Website> visitedWebsites = new ArrayList<>();
 
-        List<String> linksToVisit = new ArrayList<>();
+        List<String> linksToVisit = filterLinksToVisit(website.getLinks(), domains);
 
-        for (String link : website.getLinks()) {
-            for (String domain : domains) {
-                if (link.contains(domain)) {
-                    linksToVisit.add(link);
-                }
-            }
-        }
-
-        linksToVisit.forEach(link -> visitedWebsites.add(extractLinksAndHeading(link, website.getDepth() + 1)));
+        linksToVisit.forEach(link -> {
+            Website visitedWebsite = extractLinksAndHeading(link, website.getDepth() + 1);
+            visitedWebsite.setParentUrl(website.getOwnUrl());
+            visitedWebsites.add(visitedWebsite);
+        });
 
         if (!visitedWebsites.isEmpty() && visitedWebsites.get(0).getDepth() < maxDepth) {
             List<Website> w2 = new ArrayList<>();
             visitedWebsites.forEach(w -> w2.addAll(trackVisitedWebsites(w, maxDepth, domains)));
             visitedWebsites.addAll(w2);
-        } else {
-            return visitedWebsites;
         }
-
         return visitedWebsites;
+    }
+
+    private static List<String> filterLinksToVisit(List<String> links, List<String> domains) {
+        List<String> linksToVisit = new ArrayList<>();
+
+        for (String link : links) {
+            for (String domain : domains) {
+                if (link.contains(domain) && !linksToVisit.contains(link)) {
+                    linksToVisit.add(link);
+                }
+            }
+        }
+        return linksToVisit;
     }
 }

@@ -1,20 +1,21 @@
-package at.aau.crawler.model;
+package aau.crawler.model;
 
 import java.util.List;
 
 public class Website {
     int depth;
+    String ownUrl;
     String parentUrl;
     List<String> headings;
     List<String> links;
 
     public Website() {}
 
-    public Website(int depth, List<String> headings, List<String> links, String parentUrl) {
+    public Website(int depth, List<String> headings, List<String> links, String ownUrl) {
         this.depth = depth;
         this.headings = headings;
         this.links = links;
-        this.parentUrl = parentUrl;
+        this.ownUrl = ownUrl;
     }
 
     public int getDepth() {
@@ -41,6 +42,14 @@ public class Website {
         this.links = links;
     }
 
+    public String getOwnUrl() {
+        return ownUrl;
+    }
+
+    public void setOwnUrl(String ownUrl) {
+        this.ownUrl = ownUrl;
+    }
+
     public String getParentUrl() {
         return parentUrl;
     }
@@ -53,6 +62,7 @@ public class Website {
     public String toString() {
         return "Website{" +
                 "depth=" + depth +
+                ", ownUrl='" + ownUrl + '\'' +
                 ", parentUrl='" + parentUrl + '\'' +
                 ", headings=" + headings +
                 ", links=" + links +

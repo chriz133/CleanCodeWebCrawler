@@ -1,5 +1,6 @@
 package aau.crawler.utilities;
 
+import aau.crawler.interfaces.Crawler;
 import aau.crawler.model.Website;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -11,14 +12,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class Crawler {
+public class CrawlerImpl implements Crawler {
     private List<String> alreadyVisitedUrls;
 
-    public Crawler() {
+    public CrawlerImpl() {
         this.alreadyVisitedUrls = new ArrayList<>();
     }
 
-
+    @Override
     public List<Website> crawlWebsite(String url, int maxDepth, List<String> domains) {
         Website website = this.extractLinksAndHeading(url, 1);
         List<Website> websites = trackVisitedWebsites(website, maxDepth, domains);
@@ -27,7 +28,8 @@ public class Crawler {
         return websites;
     }
 
-    public static String convertWebsiteToString(Website website) {
+    @Override
+    public String convertWebsiteToString(Website website) {
         return null;
     }
 

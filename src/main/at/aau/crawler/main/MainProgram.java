@@ -2,7 +2,7 @@ package aau.crawler.main;
 
 
 import aau.crawler.model.Website;
-import aau.crawler.utilities.Crawler;
+import aau.crawler.utilities.CrawlerImpl;
 
 import java.util.Arrays;
 import java.util.List;
@@ -13,8 +13,8 @@ public class MainProgram {
         long startTime = System.currentTimeMillis();
         List<String> domains = Arrays.stream(new String[]{"wetter.orf.at", "sport.orf.at"}).collect(Collectors.toList());
 
-        Crawler crawler = new Crawler();
-        List<Website> websites = crawler.crawlWebsite("https://www.orf.at", 3, domains);
+        CrawlerImpl crawler = new CrawlerImpl();
+        List<Website> websites = crawler.crawlWebsite("https://www.orf.at", 4, domains);
         for (Website website2 : websites) {
             System.out.println(website2);
         }

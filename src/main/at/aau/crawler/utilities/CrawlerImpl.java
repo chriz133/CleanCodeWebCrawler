@@ -1,12 +1,15 @@
 package aau.crawler.utilities;
 
 import aau.crawler.interfaces.Crawler;
+import aau.crawler.model.Heading;
 import aau.crawler.model.Website;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
+import java.io.BufferedWriter;
+import java.io.FileWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,22 +32,33 @@ public class CrawlerImpl implements Crawler {
     }
 
     @Override
-    public String convertWebsiteToString(Website website) {
-        return null;
+    public boolean printWebsitesToFile(List<Website> websites, String filename, String path) {
+        try {
+            BufferedWriter bw = new BufferedWriter(new FileWriter(path + "\\" + filename));
+            for (Website website : websites) {
+                bw.write(website.printDetails());
+            }
+            bw.close();
+        } catch (IOException e) {
+            return false;
+        }
+        return true;
     }
 
     private Website extractLinksAndHeading(String url, int newDepth) {
         try {
             Document doc = Jsoup.connect(url).get();
-            Elements newsHeadlines = new Elements();
+            List<Heading> headlines = new ArrayList<>();
             for (int i = 1; i <= 4; i++) {
-                newsHeadlines.addAll(doc.select("h" + i));
+                for (Element element : doc.select("h" + i)) {
+                    headlines.add(new Heading("h" + i, element.text()));
+                }
             }
-            Elements links = doc.select("a[href]");
+            Elements extractedLinks = doc.select("a[href]");
 
             Website website = new Website(newDepth,
-                                          newsHeadlines.stream().map(Element::text).collect(Collectors.toList()),
-                                          links.stream().map(l -> l.attr("abs:href")).collect(Collectors.toList()),
+                                          headlines,
+                                          extractedLinks.stream().map(l -> l.attr("abs:href")).collect(Collectors.toList()),
                                           url);
             return website;
         } catch (IOException e) {

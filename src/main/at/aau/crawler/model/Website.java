@@ -6,13 +6,13 @@ public class Website {
     int depth;
     String ownUrl;
     String parentUrl;
-    List<String> headings;
+    List<Heading> headings;
     List<String> links;
     boolean isBroken;
 
     public Website() {}
 
-    public Website(int depth, List<String> headings, List<String> links, String ownUrl) {
+    public Website(int depth, List<Heading> headings, List<String> links, String ownUrl) {
         this.depth = depth;
         this.headings = headings;
         this.links = links;
@@ -32,11 +32,11 @@ public class Website {
         this.depth = depth;
     }
 
-    public List<String> getHeadings() {
+    public List<Heading> getHeadings() {
         return headings;
     }
 
-    public void setHeadings(List<String> headings) {
+    public void setHeadings(List<Heading> headings) {
         this.headings = headings;
     }
 
@@ -81,5 +81,33 @@ public class Website {
                 ", headings=" + headings +
                 ", links=" + links +
                 '}';
+    }
+
+    public String printDetails(){
+        StringBuilder sb = new StringBuilder();
+
+        sb.append("Ownurl: ").append(ownUrl).append("\n");
+        if (this.parentUrl != null){
+            sb.append("Parenturl: ").append(parentUrl).append("\n");
+        }
+        sb.append("Depth: ").append(depth).append("\n\n");
+
+        for (Heading heading : headings){
+            sb.append("<").append(heading.type).append(">");
+            sb.append(heading.value);
+            sb.append("</").append(heading.type).append(">\n");
+        }
+
+        sb.append("\n");
+
+        for (String link : links){
+            sb.append("<").append("a").append(">");
+            sb.append(link);
+            sb.append("</").append("a").append(">\n");
+        }
+
+        sb.append("\n\n");
+
+        return sb.toString();
     }
 }

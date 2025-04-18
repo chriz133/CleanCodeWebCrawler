@@ -12,17 +12,26 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class Crawler {
-    private Crawler() {}
+    private List<String> alreadyVisitedUrls;
+
+    public Crawler() {
+        this.alreadyVisitedUrls = new ArrayList<>();
+    }
 
 
-    public static List<Website> crawlWebsite(String url, int maxDepth, List<String> domains) {
-        Website website = Crawler.extractLinksAndHeading(url, 1);
+    public List<Website> crawlWebsite(String url, int maxDepth, List<String> domains) {
+        Website website = this.extractLinksAndHeading(url, 1);
         List<Website> websites = trackVisitedWebsites(website, maxDepth, domains);
         websites.add(0, website);
+        this.alreadyVisitedUrls.clear();
         return websites;
     }
 
-    public static Website extractLinksAndHeading(String url, int newDepth) {
+    public static String convertWebsiteToString(Website website) {
+        return null;
+    }
+
+    private Website extractLinksAndHeading(String url, int newDepth) {
         try {
             Document doc = Jsoup.connect(url).get();
             Elements newsHeadlines = new Elements();
@@ -37,30 +46,40 @@ public class Crawler {
                                           url);
             return website;
         } catch (IOException e) {
-            return null;
+            Website brokenWebsite = new Website(url);
+            return brokenWebsite;
         }
     }
 
-    public static List<Website> trackVisitedWebsites(Website website, int maxDepth, List<String> domains) {
+    private List<Website> trackVisitedWebsites(Website website, int maxDepth, List<String> domains) {
        List<Website> visitedWebsites = new ArrayList<>();
 
-        List<String> linksToVisit = filterLinksToVisit(website.getLinks(), domains);
+        List<String> linksToVisit = this.filterLinksToVisit(website.getLinks(), domains);
 
-        linksToVisit.forEach(link -> {
-            Website visitedWebsite = extractLinksAndHeading(link, website.getDepth() + 1);
-            visitedWebsite.setParentUrl(website.getOwnUrl());
-            visitedWebsites.add(visitedWebsite);
+        linksToVisit.forEach(url -> {
+            url = this.trimUrl(url);
+
+            if (!this.alreadyVisitedUrls.contains(url)) {
+                this.alreadyVisitedUrls.add(url);
+                Website visitedWebsite = this.extractLinksAndHeading(url, website.getDepth() + 1);
+                visitedWebsite.setParentUrl(website.getOwnUrl());
+                visitedWebsites.add(visitedWebsite);
+            }
         });
 
         if (!visitedWebsites.isEmpty() && visitedWebsites.get(0).getDepth() < maxDepth) {
-            List<Website> w2 = new ArrayList<>();
-            visitedWebsites.forEach(w -> w2.addAll(trackVisitedWebsites(w, maxDepth, domains)));
-            visitedWebsites.addAll(w2);
+            List<Website> newVisitedWebsites = new ArrayList<>();
+            visitedWebsites.forEach(w -> {
+                if (!w.isBroken()) {
+                    newVisitedWebsites.addAll(trackVisitedWebsites(w, maxDepth, domains));
+                }
+            });
+            visitedWebsites.addAll(newVisitedWebsites);
         }
         return visitedWebsites;
     }
 
-    private static List<String> filterLinksToVisit(List<String> links, List<String> domains) {
+    private List<String> filterLinksToVisit(List<String> links, List<String> domains) {
         List<String> linksToVisit = new ArrayList<>();
 
         for (String link : links) {
@@ -71,5 +90,13 @@ public class Crawler {
             }
         }
         return linksToVisit;
+    }
+
+    private String trimUrl(String url) {
+        if (url.charAt(url.length() -1) == '/' ||
+                url.charAt(url.length() -1) == '#') {
+            url = url.substring(0, url.length() - 1);
+        }
+        return url;
     }
 }

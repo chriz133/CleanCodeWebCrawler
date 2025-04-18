@@ -13,7 +13,8 @@ public class MainProgram {
         long startTime = System.currentTimeMillis();
         List<String> domains = Arrays.stream(new String[]{"wetter.orf.at", "sport.orf.at"}).collect(Collectors.toList());
 
-        List<Website> websites = Crawler.crawlWebsite("https://www.orf.at", 3, domains);
+        Crawler crawler = new Crawler();
+        List<Website> websites = crawler.crawlWebsite("https://www.orf.at", 3, domains);
         for (Website website2 : websites) {
             System.out.println(website2);
         }

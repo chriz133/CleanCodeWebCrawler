@@ -8,6 +8,7 @@ public class Website {
     String parentUrl;
     List<String> headings;
     List<String> links;
+    boolean isBroken;
 
     public Website() {}
 
@@ -16,6 +17,11 @@ public class Website {
         this.headings = headings;
         this.links = links;
         this.ownUrl = ownUrl;
+    }
+
+    public Website(String ownUrl) {
+        this(-1, null, null, ownUrl);
+        this.isBroken = true;
     }
 
     public int getDepth() {
@@ -56,6 +62,14 @@ public class Website {
 
     public void setParentUrl(String parentUrl) {
         this.parentUrl = parentUrl;
+    }
+
+    public boolean isBroken() {
+        return isBroken;
+    }
+
+    public void setBroken(boolean broken) {
+        isBroken = broken;
     }
 
     @Override

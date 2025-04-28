@@ -14,7 +14,7 @@ public class MainProgram {
     public static void main(String[] args) {
         if (args.length < 3) {
             System.out.println("Please enter: java MainProgram <URL> <depth> <domain1,domain2,...>");
-            System.out.println("Hint: depth must me an integer!");
+            System.out.println("Hint: depth must be an integer!");
             return;
         }
         String url = args[0];
@@ -23,7 +23,7 @@ public class MainProgram {
         try {
             depth = Integer.parseInt(args[1]);
         } catch (NumberFormatException e) {
-            System.out.println("Invalid, depth must me an integer!");
+            System.out.println("Invalid, depth must be an integer!");
             return;
         }
         CrawlerImpl crawler = new CrawlerImpl();

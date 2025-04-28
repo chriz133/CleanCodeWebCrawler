@@ -50,7 +50,7 @@ public class CrawlerTest {
         System.out.println(website);
 
         assertTrue(website.getLinks().containsAll(expectedLinks));
-        assertTrue(website.getHeadings().get(0).getValue().equals("Example Domain"));
+        assertEquals("Example Domain", website.getHeadings().get(0).getValue());
     }
 
     @Test
@@ -81,7 +81,13 @@ public class CrawlerTest {
         Files.delete(filePath);
         Files.delete(directoryPath);
         assertFalse(Files.exists(filePath));
+    }
 
+    @Test
+    void testPrintWebsitesToFileNotValidPath() {
+        String testDirectory = "/src/main/at/aau/crawler/testFiles";
+        boolean result = crawler.printWebsitesToFile(null, "websites.md", testDirectory);
+        assertFalse(result);
     }
 
 

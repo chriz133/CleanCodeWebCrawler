@@ -36,6 +36,7 @@ Depth: 1
 <h3>U-Bahnen und Zugsverkehr gestoppt</h3>
 <h3>Stromnetzbetreiber arbeitet an Behebung der Störung</h3>
 <h3>Von 8. bis 11. Mai: Putin kündigt einseitig Waffenruhe an</h3>
+<h3>Militärparade in Moskau</h3>
 <h3>Israel nicht bei IGH-Anhörung in Den Haag</h3>
 <h3>Etliche Staaten kündigten Stellungnahmen ab</h3>
 <h3>Weiter keine Hilfslieferungen in Gazastreifen</h3>
@@ -411,6 +412,8 @@ Depth: 2
 <a>https://sport.orf.at/stories/3140675/</a>
 <a>https://sport.orf.at/stories/3140676/</a>
 <a>https://sport.orf.at/stories/3140710/</a>
+<a>https://sport.orf.at/tabellen/stories/2288143/</a>
+<a>https://sport.orf.at/tabellen/stories/2288146/</a>
 <a>https://orf.at/stories/impressum-nachrichtenagenturen/</a>
 <a>https://sport.orf.at/stories/3140679/</a>
 <a>https://sport.orf.at/stories/3140707/</a>
@@ -980,6 +983,8 @@ Depth: 4
 <a>https://sport.orf.at/stories/3140675/</a>
 <a>https://sport.orf.at/stories/3140676/</a>
 <a>https://sport.orf.at/stories/3140710/</a>
+<a>https://sport.orf.at/tabellen/stories/2288143/</a>
+<a>https://sport.orf.at/tabellen/stories/2288146/</a>
 <a>https://orf.at/stories/impressum-nachrichtenagenturen/</a>
 <a>https://sport.orf.at/stories/3140679/</a>
 <a>https://sport.orf.at/stories/3140707/</a>
@@ -1141,6 +1146,8 @@ Depth: 5
 <a>https://sport.orf.at/stories/3140675/</a>
 <a>https://sport.orf.at/stories/3140676/</a>
 <a>https://sport.orf.at/stories/3140710/</a>
+<a>https://sport.orf.at/tabellen/stories/2288143/</a>
+<a>https://sport.orf.at/tabellen/stories/2288146/</a>
 <a>https://orf.at/stories/impressum-nachrichtenagenturen/</a>
 <a>https://sport.orf.at/stories/3140679/</a>
 <a>https://sport.orf.at/stories/3140707/</a>
@@ -1302,6 +1309,8 @@ Depth: 5
 <a>https://sport.orf.at/stories/3140675/</a>
 <a>https://sport.orf.at/stories/3140676/</a>
 <a>https://sport.orf.at/stories/3140710/</a>
+<a>https://sport.orf.at/tabellen/stories/2288143/</a>
+<a>https://sport.orf.at/tabellen/stories/2288146/</a>
 <a>https://orf.at/stories/impressum-nachrichtenagenturen/</a>
 <a>https://sport.orf.at/stories/3140679/</a>
 <a>https://sport.orf.at/stories/3140707/</a>
@@ -1519,6 +1528,8 @@ Depth: 5
 <a>https://sport.orf.at/stories/3140675/</a>
 <a>https://sport.orf.at/stories/3140676/</a>
 <a>https://sport.orf.at/stories/3140710/</a>
+<a>https://sport.orf.at/tabellen/stories/2288143/</a>
+<a>https://sport.orf.at/tabellen/stories/2288146/</a>
 <a>https://orf.at/stories/impressum-nachrichtenagenturen/</a>
 <a>https://sport.orf.at/stories/3140679/</a>
 <a>https://sport.orf.at/stories/3140707/</a>
@@ -1819,6 +1830,8 @@ Depth: 5
 <a>https://orf.at/uebersicht/</a>
 <a>https://sport.orf.at/stories/3140710#</a>
 <a>https://sport.orf.at/stories/3140710#</a>
+<a>https://sport.orf.at/tabellen/stories/2288143/</a>
+<a>https://sport.orf.at/tabellen/stories/2288146/</a>
 <a>https://orf.at/stories/impressum-nachrichtenagenturen/</a>
 <a>https://sport.orf.at/</a>
 <a>https://orf.at/</a>
@@ -1836,6 +1849,122 @@ Depth: 5
 <a>https://der.orf.at/kontakt</a>
 <a>https://orf.at/stories/datenschutz</a>
 <a>https://sport.orf.at/stories/3140710#</a>
+<a>https://orf.at/stories/impressum/</a>
+<a>https://zukunft.orf.at/show_content2.php?s2id=183</a>
+<a>https://publikumsrat.orf.at/</a>
+
+
+Ownurl: https://sport.orf.at/tabellen/stories/2288143
+Parenturl: https://sport.orf.at/m
+Depth: 5
+
+<h1>Aktuelle ATP-Turniere</h1>
+<h2>Alle Tabellen</h2>
+<h2>ATP-1000-Turnier in Madrid</h2>
+<h2>Link:</h2>
+
+<a>https://sport.orf.at/tabellen/stories/2288143#ss-storyWrapper</a>
+<a>https://sport.orf.at/tabellen/stories/2288143#ss-networkNavigation</a>
+<a>https://tv.orf.at/</a>
+<a>https://on.orf.at/</a>
+<a>https://kids.orf.at/</a>
+<a>https://sound.orf.at/</a>
+<a>https://topos.orf.at/</a>
+<a>https://debatte.orf.at/</a>
+<a>https://oesterreich.orf.at/</a>
+<a>https://wetter.orf.at/</a>
+<a>https://sport.orf.at/</a>
+<a>https://orf.at/</a>
+<a>https://orf.at/uebersicht/</a>
+<a>https://sport.orf.at/</a>
+<a>https://orf.at/</a>
+<a>https://orf.at/</a>
+<a>https://sport.orf.at/</a>
+<a>https://wetter.orf.at/m/</a>
+<a>https://oesterreich.orf.at/m/</a>
+<a>https://debatte.orf.at</a>
+<a>https://sound.orf.at</a>
+<a>https://topos.orf.at/</a>
+<a>https://on.orf.at/</a>
+<a>https://kids.orf.at/</a>
+<a>https://tv.orf.at/</a>
+<a>https://orf.at/uebersicht/</a>
+<a>https://sport.orf.at/tabellen/stories/2288143#</a>
+<a>https://sport.orf.at/tabellen/stories/2288143#</a>
+<a>https://www.atptour.com</a>
+<a>https://sport.orf.at/</a>
+<a>https://orf.at/</a>
+<a>https://sport.orf.at/</a>
+<a>https://wetter.orf.at/</a>
+<a>https://oesterreich.orf.at/</a>
+<a>https://debatte.orf.at/</a>
+<a>https://sound.orf.at/</a>
+<a>https://topos.orf.at/</a>
+<a>https://on.orf.at/</a>
+<a>https://kids.orf.at/</a>
+<a>https://tv.orf.at/</a>
+<a>https://radio.orf.at/</a>
+<a>https://orf.at/uebersicht/</a>
+<a>https://der.orf.at/kontakt</a>
+<a>https://orf.at/stories/datenschutz</a>
+<a>https://orf.at/stories/impressum/</a>
+<a>https://zukunft.orf.at/show_content2.php?s2id=183</a>
+<a>https://publikumsrat.orf.at/</a>
+
+
+Ownurl: https://sport.orf.at/tabellen/stories/2288146
+Parenturl: https://sport.orf.at/m
+Depth: 5
+
+<h1>Aktuelle WTA-Turniere</h1>
+<h2>Alle Tabellen</h2>
+<h2>WTA-1000-Turnier in Madrid</h2>
+<h2>Link:</h2>
+
+<a>https://sport.orf.at/tabellen/stories/2288146#ss-storyWrapper</a>
+<a>https://sport.orf.at/tabellen/stories/2288146#ss-networkNavigation</a>
+<a>https://tv.orf.at/</a>
+<a>https://on.orf.at/</a>
+<a>https://kids.orf.at/</a>
+<a>https://sound.orf.at/</a>
+<a>https://topos.orf.at/</a>
+<a>https://debatte.orf.at/</a>
+<a>https://oesterreich.orf.at/</a>
+<a>https://wetter.orf.at/</a>
+<a>https://sport.orf.at/</a>
+<a>https://orf.at/</a>
+<a>https://orf.at/uebersicht/</a>
+<a>https://sport.orf.at/</a>
+<a>https://orf.at/</a>
+<a>https://orf.at/</a>
+<a>https://sport.orf.at/</a>
+<a>https://wetter.orf.at/m/</a>
+<a>https://oesterreich.orf.at/m/</a>
+<a>https://debatte.orf.at</a>
+<a>https://sound.orf.at</a>
+<a>https://topos.orf.at/</a>
+<a>https://on.orf.at/</a>
+<a>https://kids.orf.at/</a>
+<a>https://tv.orf.at/</a>
+<a>https://orf.at/uebersicht/</a>
+<a>https://sport.orf.at/tabellen/stories/2288146#</a>
+<a>https://sport.orf.at/tabellen/stories/2288146#</a>
+<a>http://www.wtatennis.com</a>
+<a>https://sport.orf.at/</a>
+<a>https://orf.at/</a>
+<a>https://sport.orf.at/</a>
+<a>https://wetter.orf.at/</a>
+<a>https://oesterreich.orf.at/</a>
+<a>https://debatte.orf.at/</a>
+<a>https://sound.orf.at/</a>
+<a>https://topos.orf.at/</a>
+<a>https://on.orf.at/</a>
+<a>https://kids.orf.at/</a>
+<a>https://tv.orf.at/</a>
+<a>https://radio.orf.at/</a>
+<a>https://orf.at/uebersicht/</a>
+<a>https://der.orf.at/kontakt</a>
+<a>https://orf.at/stories/datenschutz</a>
 <a>https://orf.at/stories/impressum/</a>
 <a>https://zukunft.orf.at/show_content2.php?s2id=183</a>
 <a>https://publikumsrat.orf.at/</a>
@@ -3353,6 +3482,8 @@ Depth: 3
 <a>https://sport.orf.at/stories/3140675/</a>
 <a>https://sport.orf.at/stories/3140676/</a>
 <a>https://sport.orf.at/stories/3140710/</a>
+<a>https://sport.orf.at/tabellen/stories/2288143/</a>
+<a>https://sport.orf.at/tabellen/stories/2288146/</a>
 <a>https://orf.at/stories/impressum-nachrichtenagenturen/</a>
 <a>https://sport.orf.at/stories/3140679/</a>
 <a>https://sport.orf.at/stories/3140707/</a>
@@ -3514,6 +3645,8 @@ Depth: 3
 <a>https://sport.orf.at/stories/3140675/</a>
 <a>https://sport.orf.at/stories/3140676/</a>
 <a>https://sport.orf.at/stories/3140710/</a>
+<a>https://sport.orf.at/tabellen/stories/2288143/</a>
+<a>https://sport.orf.at/tabellen/stories/2288146/</a>
 <a>https://orf.at/stories/impressum-nachrichtenagenturen/</a>
 <a>https://sport.orf.at/stories/3140679/</a>
 <a>https://sport.orf.at/stories/3140707/</a>

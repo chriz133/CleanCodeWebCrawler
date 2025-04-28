@@ -51,7 +51,7 @@ public class CrawlerImpl implements Crawler {
 
             Path filePath = directory.resolve(filename);
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
+            BufferedWriter bw = Files.newBufferedWriter(filePath);
             for (Website website : websites) {
                 bw.write(website.printDetails());
             }

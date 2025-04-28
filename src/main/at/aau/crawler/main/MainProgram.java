@@ -4,6 +4,8 @@ package aau.crawler.main;
 import aau.crawler.model.Website;
 import aau.crawler.utilities.CrawlerImpl;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,21 +26,15 @@ public class MainProgram {
             System.out.println("Invalid, depth must me an integer!");
             return;
         }
-
-        long startTime = System.currentTimeMillis();
-        //List<String> domains = Arrays.stream(new String[]{"wetter.orf.at", "sport.orf.at"}).collect(Collectors.toList());
-
         CrawlerImpl crawler = new CrawlerImpl();
-        //List<Website> websites = crawler.crawlWebsite("https://www.orf.at", 5, domains);
+
         List<Website> websites = crawler.crawlWebsite(url, depth, domains);
 
-        for (Website website2 : websites) {
-            System.out.println(website2);
+        for (Website website : websites) {
+            System.out.println(website);
         }
-        long endTime = System.currentTimeMillis();
-        System.out.println("Time taken: " + (endTime - startTime) / 1000 + "s");
 
-//        System.out.println(crawler.printWebsitesToFile(websites, "test.md", "Z:\\UNI\\CleanCode\\CleanCodeWebCrawler\\src\\main\\at\\aau\\crawler\\files"));
-        System.out.println(crawler.printWebsitesToFile(websites, "test.md", "src/main/at/aau/crawler/files"));
+        String filename = String.format("output_%s", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")));
+        System.out.println(crawler.printWebsitesToFile(websites, filename, "src/main/at/aau/crawler/files"));
     }
 }

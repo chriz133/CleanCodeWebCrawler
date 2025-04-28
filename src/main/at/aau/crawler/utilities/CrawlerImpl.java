@@ -102,9 +102,9 @@ public class CrawlerImpl implements Crawler {
 
         if (!visitedWebsites.isEmpty() && visitedWebsites.get(0).getDepth() < maxDepth) {
             List<Website> newVisitedWebsites = new ArrayList<>();
-            visitedWebsites.forEach(w -> {
-                if (!w.isBroken()) {
-                    newVisitedWebsites.addAll(trackVisitedWebsites(w, maxDepth, domains));
+            visitedWebsites.forEach(visitedWebsite -> {
+                if (!visitedWebsite.isBroken()) {
+                    newVisitedWebsites.addAll(trackVisitedWebsites(visitedWebsite, maxDepth, domains));
                 }
             });
             visitedWebsites.addAll(newVisitedWebsites);

@@ -81,8 +81,14 @@ public class CrawlerTest {
         Files.delete(filePath);
         Files.delete(directoryPath);
         assertFalse(Files.exists(filePath));
-
     }
+    @Test
+    void testPrintWebsitesToFileInvalidPath() throws IOException {
+        String testDirectory = "//src/main/at/aau/crawler/testFiles";
+        boolean result = crawler.printWebsitesToFile(null, "websites.md", testDirectory);
+        assertFalse(result);
+    }
+
 
 
 }

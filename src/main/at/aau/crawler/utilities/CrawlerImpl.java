@@ -47,7 +47,9 @@ public class CrawlerImpl implements Crawler {
     public boolean printWebsitesToFile(List<Website> websites, String filename, String path) {
         try {
             Path directory = Paths.get(path);
+            System.out.println(directory);
             if (!Files.exists(directory)) {
+                System.out.println("Existiert nicht");
                 Files.createDirectories(directory);
             }
 

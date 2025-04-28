@@ -31,7 +31,9 @@ public class CrawlerImpl implements Crawler {
         if (maxDepth < 0){
             return null;
         }
+
         Website website = this.extractLinksAndHeading(url, 1);
+
         if (website.isBroken()) {
             return null;
         }
@@ -50,6 +52,7 @@ public class CrawlerImpl implements Crawler {
             }
 
             Path filePath = directory.resolve(filename);
+            System.out.println(filePath);
 
             BufferedWriter bw = Files.newBufferedWriter(filePath);
             for (Website website : websites) {

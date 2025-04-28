@@ -30,11 +30,15 @@ public class MainProgram {
 
         List<Website> websites = crawler.crawlWebsite(url, depth, domains);
 
-        for (Website website : websites) {
-            System.out.println(website);
-        }
+        String filename = String.format("output_%s.md", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")));
+        boolean status = crawler.printWebsitesToFile(websites, filename, "src/main/at/aau/crawler/files");
 
-        String filename = String.format("output_%s", LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")));
-        System.out.println(crawler.printWebsitesToFile(websites, filename, "src/main/at/aau/crawler/files"));
+        if (status) {
+            System.out.println("Successfully printed websites to file!");
+            System.exit(0);
+        } else {
+            System.err.println("Failed to print websites to file!");
+            System.exit(1);
+        }
     }
 }

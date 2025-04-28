@@ -39,6 +39,6 @@ public class MainProgram {
         System.out.println("Time taken: " + (endTime - startTime) / 1000 + "s");
 
 //        System.out.println(crawler.printWebsitesToFile(websites, "test.md", "Z:\\UNI\\CleanCode\\CleanCodeWebCrawler\\src\\main\\at\\aau\\crawler\\files"));
-        System.out.println(crawler.printWebsitesToFile(websites, "test.md", "/Volumes/T7/Uni/CleanCode/CleanCodeWebCrawler/src/main/at/aau/crawler/files"));
+        System.out.println(crawler.printWebsitesToFile(websites, "test.md", "src/main/at/aau/crawler/files"));
     }
 }

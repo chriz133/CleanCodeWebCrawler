@@ -9,8 +9,12 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,7 +44,14 @@ public class CrawlerImpl implements Crawler {
     @Override
     public boolean printWebsitesToFile(List<Website> websites, String filename, String path) {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(path + "/" + filename));
+            Path directory = Paths.get(path);
+            if (!Files.exists(directory)) {
+                Files.createDirectories(directory);
+            }
+
+            Path filePath = directory.resolve(filename);
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(filename));
             for (Website website : websites) {
                 bw.write(website.printDetails());
             }

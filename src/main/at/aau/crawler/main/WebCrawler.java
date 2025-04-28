@@ -10,12 +10,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class MainProgram {
+public class WebCrawler {
     public static void main(String[] args) {
         if (args.length < 3) {
             System.out.println("Please enter: java MainProgram <URL> <depth> <domain1,domain2,...>");
             System.out.println("Hint: depth must be an integer!");
-            return;
+            System.exit(1);
         }
         String url = args[0];
         List<String> domains = Arrays.stream(args[2].split(",")).map(String::trim).collect(Collectors.toList());

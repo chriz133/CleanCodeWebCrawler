@@ -24,7 +24,13 @@ public class CrawlerImpl implements Crawler {
 
     @Override
     public List<Website> crawlWebsite(String url, int maxDepth, List<String> domains) {
+        if (maxDepth < 0){
+            return null;
+        }
         Website website = this.extractLinksAndHeading(url, 1);
+        if (website.isBroken()) {
+            return null;
+        }
         List<Website> websites = trackVisitedWebsites(website, maxDepth, domains);
         websites.add(0, website);
         this.alreadyVisitedUrls.clear();
@@ -34,7 +40,7 @@ public class CrawlerImpl implements Crawler {
     @Override
     public boolean printWebsitesToFile(List<Website> websites, String filename, String path) {
         try {
-            BufferedWriter bw = new BufferedWriter(new FileWriter(path + "\\" + filename));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(path + "/" + filename));
             for (Website website : websites) {
                 bw.write(website.printDetails());
             }
@@ -61,7 +67,7 @@ public class CrawlerImpl implements Crawler {
                                           extractedLinks.stream().map(l -> l.attr("abs:href")).collect(Collectors.toList()),
                                           url);
             return website;
-        } catch (IOException e) {
+        } catch (IOException | IllegalArgumentException e) {
             Website brokenWebsite = new Website(url);
             return brokenWebsite;
         }

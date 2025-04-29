@@ -1,3 +1,18 @@
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# files output folder
+files/
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
+
 # Compiled class file
 *.class
 

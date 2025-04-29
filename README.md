@@ -11,11 +11,13 @@ This project implements a Web-Crawler, which provides a compact overview of the 
 ## Getting started
 
 ### Build Project
-
+- **Clone Repository**: use git clone <URL>
+- **Build the Project with Maven**: `mvn clean package` Maven will compile the source code, run tests, and package the application into a JAR-file. The output is placed in the `target` directory. It should look like: `target/WebCrawler-1.0-SNAPSHOT.jar`
 
 ### Run the Web-Crawler
-To use the Web-Crawler, te user has to enter the following in the command-line: `java MainProgram <URL> <depth> <domain1,domain2,...>`. 
+After the succesful build the application can be runned with the generated JAR-file.
+To use the Web-Crawler, te user has to enter the following in the command-line: `java -jar target/WebCrawler-1.0-SNAPSHOT.jar <URL> <depth> <domain1,domain2,...>`. 
 It must be noted that depth has to be an integer, the url must be formatted as follows: `https://www.example.at` and you can enter one or more domains like: `weather.example.at,sport.example.at`.
 
 ### Testing
-
+To test the Project the user first of all has to download `Maven 3.9.9`. Now the test can be runned with `mvn test`.

@@ -54,9 +54,9 @@ public class SimpleWebCrawler implements Crawler {
      * The stream enables sequential and parallel operation on the elements and
      * with map() each element gets addressed.
      *
-     * @param url
-     * @param newDepth
-     * @return Website
+     * @param url           the starting URL to crawl
+     * @param newDepth      the new maximum recursion depth to crawl
+     * @return Website      returning Website with links and headings
      */
     private Website extractLinksAndHeading(String url, int newDepth) {
         try {
@@ -85,12 +85,12 @@ public class SimpleWebCrawler implements Crawler {
      * linksToVisit has all links of the root url that must be visited.
      * For each link to visit it is checked if it has already been visited
      * since it can only be visited once. Furthermore, each link recursively
-     * calls extractLinksAndHeading() and is in this case the new root url.
+     * calls visitWebsite() and is in this case the new root url.
      *
-     * @param website
-     * @param maxDepth
-     * @param domains
-     * @return List<Website>
+     * @param website           websites to retrieve its links
+     * @param maxDepth          the maximum recursion depth to crawl
+     * @param domains           domains to be crawled
+     * @return List<Website>    visited websites are returned
      */
     private List<Website> trackVisitedWebsites(Website website, int maxDepth, List<String> domains) {
         List<Website> visitedWebsites = new ArrayList<>();
@@ -162,9 +162,9 @@ public class SimpleWebCrawler implements Crawler {
 
     /**
      * Checks if the link contains the allowed domains.
-     * @param links
-     * @param domains
-     * @return
+     * @param links     links which should contain given domains
+     * @param domains   domains should occur in given links
+     * @return          list of links that should be visited with given domains
      */
     private List<String> filterLinksToVisit(List<String> links, List<String> domains) {
         if (domains == null) {

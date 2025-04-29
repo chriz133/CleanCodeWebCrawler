@@ -8,46 +8,6 @@ This project implements a Web-Crawler, which provides a compact overview of the 
 - **Broken Link Detection**: Highlights broken links
 - **Markdown File**: The results is stored in a single markdown file (.md extension)
 
-## Getting started
-
-### Build Project
-- **Clone Repository**: use git clone <URL>
-- **Build the Project with Maven**: `mvn clean package` Maven will compile the source code, run tests, and package the application into a JAR-file. The output is placed in the `target` directory. It should look like: `target/WebCrawler-1.0-SNAPSHOT.jar`
-
-### Run the Web-Crawler
-After the succesful build the application can be runned with the generated JAR-file.
-To use the Web-Crawler, te user has to enter the following in the command-line: `java -jar target/WebCrawler-1.0-SNAPSHOT.jar <URL> <depth> <domain1,domain2,...>`. 
-It must be noted that depth has to be an integer, the url must be formatted as follows: `https://www.example.at` and you can enter one or more domains like: `weather.example.at,sport.example.at`.
-
-### Testing
-To test the Project the user first of all has to download `Maven 3.9.9`. Now the test can be runned with `mvn test`.
-
-
-# _______________________________________
-
-# CleanCodeWebCrawler
-
-## Overview
-**CleanCodeWebCrawler** is a Java-based web crawler designed to create a compact overview of a given website and its linked pages.  
-The crawler recursively extracts **headings** (h1–h4) and **links**, highlights broken links, and respects user-defined crawling depth and domain restrictions.  
-The output is stored as a structured **Markdown (.md)** report.
-
----
-
-## Features
-
-- Accepts input arguments: **URL**, **maximum depth**, and allowed **domains**.
-- Crawls and analyzes websites recursively (respecting depth and domain limits).
-- Extracts and lists **headings** and **links** only.
-- Properly **indents** crawled sites by their depth.
-- **Highlights broken links** that could not be loaded.
-- Avoids crawling the same URL multiple times.
-- Saves the results into a **single Markdown file** (`.md`).
-- Includes **automated unit tests** for all features.
-- Built and managed with **Maven**.
-- Uses **Jsoup** for robust HTML parsing.
-
----
 
 ## Project Structure
 

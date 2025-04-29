@@ -27,6 +27,16 @@ public class CrawlerImpl implements Crawler {
         this.alreadyVisitedUrls = new ArrayList<>();
     }
 
+    /**
+     * First all headings, links and the maximum depth of th given url is
+     * stored as a Website. This will be the root website from which the
+     * crawler will visit all links of this and all subsequent websites
+     * up to maximum depth.
+     * @param url
+     * @param maxDepth
+     * @param domains
+     * @return List<Website>
+     */
     @Override
     public List<Website> crawlWebsite(String url, int maxDepth, List<String> domains) {
         if (maxDepth < 0){
@@ -44,6 +54,15 @@ public class CrawlerImpl implements Crawler {
         return websites;
     }
 
+    /**
+     * @param path gets converted to an actual Path and if it not already exists
+     * a corresponding directory is created. A file is created with all visited
+     * websites.
+     * @param websites
+     * @param filename
+     * @param path
+     * @return boolean
+     */
     @Override
     public boolean printWebsitesToFile(List<Website> websites, String filename, String path) {
         try {
@@ -54,7 +73,6 @@ public class CrawlerImpl implements Crawler {
             }
 
             Path filePath = directory.resolve(filename);
-            System.out.println(filePath);
 
             BufferedWriter bw = Files.newBufferedWriter(filePath);
             for (Website website : websites) {
@@ -67,6 +85,18 @@ public class CrawlerImpl implements Crawler {
         return true;
     }
 
+    /**
+     * First connects to @param url via Jsoup and loads corresponding html document.
+     * All headings from h1 to h4 are stored in a new List oh Headings.
+     * Every link of the website is stored in an element-list and is later
+     * converted to an absolute link (f.e. /sport to https://example.com/sport).
+     * The stream enables sequential and parallel operation on the elements and
+     * with map() each element gets addressed.
+     *
+     * @param url
+     * @param newDepth
+     * @return Website
+     */
     private Website extractLinksAndHeading(String url, int newDepth) {
         try {
 //            Document doc = Jsoup.connect(url).get();
@@ -78,7 +108,6 @@ public class CrawlerImpl implements Crawler {
                 }
             }
             Elements extractedLinks = doc.select("a[href]");
-            System.out.println("asd" + extractedLinks.stream().map(l -> l.attr("abs:href")).collect(Collectors.toList()).size());
 
             Website website = new Website(newDepth,
                                           headlines,
@@ -91,6 +120,18 @@ public class CrawlerImpl implements Crawler {
         }
     }
 
+    /**
+     * visitedWebsites contains all websites for the current root url.
+     * linksToVisit has all links of the root url that must be visited.
+     * For each link to visit it is checked if it has already been visited
+     * since it can only be visited once. Furthermore, each link recursively
+     * calls extractLinksAndHeading() and is in this case the new root url.
+     *
+     * @param website
+     * @param maxDepth
+     * @param domains
+     * @return List<Website>
+     */
     private List<Website> trackVisitedWebsites(Website website, int maxDepth, List<String> domains) {
        List<Website> visitedWebsites = new ArrayList<>();
 
@@ -123,6 +164,12 @@ public class CrawlerImpl implements Crawler {
         return visitedWebsites;
     }
 
+    /**
+     * Checks if the link contains the allowed domains.
+     * @param links
+     * @param domains
+     * @return
+     */
     private List<String> filterLinksToVisit(List<String> links, List<String> domains) {
         if (domains == null) {
             return null;
@@ -140,6 +187,12 @@ public class CrawlerImpl implements Crawler {
         return linksToVisit;
     }
 
+    /**
+     * This method sanitizes URLs by removing unnecessary
+     * trailing characters. Specifically, trailing / or # are removed.
+     * @param url
+     * @return
+     */
     private String trimUrl(String url) {
         if (url.charAt(url.length() -1) == '/' ||
                 url.charAt(url.length() -1) == '#') {

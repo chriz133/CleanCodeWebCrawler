@@ -31,7 +31,7 @@ public class MarkdownWebsiteWriterTest {
                 new Website(1, List.of(), List.of(), "https://example.com"),
                 new Website(2, List.of(), List.of(), "https://testWebseite.com")
         );
-        String testDirectory = "src/test/at/aau/crawler/testFiles";
+        String testDirectory = "src/test/java/at/aau/crawler/testFiles";
 
         boolean result = websiteWriter.writeWebsites(websites, "websites.md", testDirectory);
         assertTrue(result);

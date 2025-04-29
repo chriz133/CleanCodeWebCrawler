@@ -9,3 +9,13 @@ This project implements a Web-Crawler, which provides a compact overview of the 
 - **Markdown File**: The results is stored in a single markdown file (.md extension)
 
 ## Getting started
+
+### Build Project
+
+
+### Run the Web-Crawler
+To use the Web-Crawler, te user has to enter the following in the command-line: `java MainProgram <URL> <depth> <domain1,domain2,...>`. 
+It must be noted that depth has to be an integer, the url must be formatted as follows: `https://www.example.at` and you can enter one or more domains like: `weather.example.at,sport.example.at`.
+
+### Testing
+

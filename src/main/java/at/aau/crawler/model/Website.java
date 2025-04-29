@@ -61,6 +61,23 @@ public class Website {
                 '}';
     }
 
+
+    /**
+     * Generates a formatted string representation of the website's details.
+     * <p>
+     * The output includes:
+     * <ul>
+     *     <li>The website's own URL</li>
+     *     <li>The parent URL (if available)</li>
+     *     <li>The depth level in the crawling hierarchy</li>
+     *     <li>A "Broken Website" marker if the site could not be crawled successfully</li>
+     *     <li>All extracted headings (h1–h4), each wrapped in appropriate HTML-like tags</li>
+     *     <li>All discovered links, each wrapped in a simulated &lt;a&gt; tag</li>
+     * </ul>
+     * If the website is marked as broken, only the URL, depth, and "Broken Website" note are included.
+     *
+     * @return a structured string containing the website's crawl details
+     */
     public String printDetails(){
         StringBuilder sb = new StringBuilder();
 

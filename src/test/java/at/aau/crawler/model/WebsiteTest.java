@@ -8,7 +8,7 @@ import static org.junit.jupiter.api.Assertions.*;
 class WebsiteTest {
 
     @Test
-    void constructor_shouldInitializeAllFieldsCorrectly() {
+    void constructorShouldInitializeAllFieldsCorrectly() {
         Heading heading1 = new Heading("h1", "Test Heading");
         Heading heading2 = new Heading("h2", "Another Heading");
         List<Heading> headings = List.of(heading1, heading2);
@@ -24,7 +24,7 @@ class WebsiteTest {
     }
 
     @Test
-    void brokenWebsiteConstructor_shouldMarkWebsiteAsBroken() {
+    void brokenWebsiteConstructorShouldMarkWebsiteAsBroken() {
         Website website = new Website("https://broken.example.com");
 
         assertTrue(website.isBroken());
@@ -35,7 +35,7 @@ class WebsiteTest {
     }
 
     @Test
-    void setParentUrl_shouldAssignParentCorrectly() {
+    void setParentUrlShouldAssignParentCorrectly() {
         Website website = new Website("https://child.example.com");
         website.setParentUrl("https://parent.example.com");
 
@@ -43,7 +43,7 @@ class WebsiteTest {
     }
 
     @Test
-    void printDetails_shouldFormatWebsiteDetailsCorrectly() {
+    void printDetailsShouldFormatWebsiteDetailsCorrectly() {
         Heading heading = new Heading("h1", "Sample Heading");
         List<Heading> headings = List.of(heading);
         List<String> links = List.of("https://example.com/link");
@@ -61,7 +61,7 @@ class WebsiteTest {
     }
 
     @Test
-    void toString_shouldContainKeyFields() {
+    void toStringShouldContainKeyFields() {
         Heading heading = new Heading("h2", "Another Heading");
         Website website = new Website(0, List.of(heading), List.of("https://link.example.com"), "https://own.example.com");
 
@@ -70,5 +70,15 @@ class WebsiteTest {
         assertTrue(result.contains("depth=0"));
         assertTrue(result.contains("ownUrl='https://own.example.com'"));
         assertTrue(result.contains("links=[https://link.example.com]"));
+    }
+
+    @Test
+    void printDetailsShouldReturnBrokenWebsiteDetailsCorrectly() {
+        Website website = new Website("https://child.example.com");
+
+        String output = website.printDetails();
+
+        assertTrue(website.isBroken());
+        assertTrue(output.contains("Broken Website"));
     }
 }

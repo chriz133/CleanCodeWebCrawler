@@ -89,7 +89,7 @@ public class SimpleWebCrawlerTest {
 
         assertTrue(websites.stream().anyMatch(website ->
                 website.getLinks().stream().anyMatch(link ->
-                        Arrays.stream(expectedLinks).anyMatch(expectedLink -> link.contains(expectedLink))
+                        Arrays.stream(expectedLinks).anyMatch(link::contains)
                 )
         ));
     }

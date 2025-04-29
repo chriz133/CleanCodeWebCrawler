@@ -60,7 +60,6 @@ public class SimpleWebCrawler implements Crawler {
      */
     private Website extractLinksAndHeading(String url, int newDepth) {
         try {
-//            Document doc = Jsoup.connect(url).get();
             Document doc = Jsoup.parse(new URL(url).openStream(), "UTF-8", url);
             List<Heading> headlines = new ArrayList<>();
             for (int i = 1; i <= 4; i++) {

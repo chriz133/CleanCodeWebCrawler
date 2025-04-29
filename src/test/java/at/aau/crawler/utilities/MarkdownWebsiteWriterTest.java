@@ -19,13 +19,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class MarkdownWebsiteWriterTest {
 
     private WebsiteWriter websiteWriter;
-    private String urlFirstPage;
 
     @BeforeEach
-    public void setUp() throws URISyntaxException {
+    public void setUp() {
         websiteWriter = new MarkdownWebsiteWriter();
-        URL resource = getClass().getClassLoader().getResource("assets/page1.html");
-        urlFirstPage = resource.toURI().toString();
     }
 
     @Test

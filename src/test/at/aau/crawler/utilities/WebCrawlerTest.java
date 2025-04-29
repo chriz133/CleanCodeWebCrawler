@@ -16,16 +16,15 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
-public class CrawlerTest {
+public class WebCrawlerTest {
 
     private Crawler crawler;
     private String urlFirstPage;
 
     @BeforeEach
     public void setUp() throws URISyntaxException {
-        crawler = new CrawlerImpl();
+        crawler = new WebCrawlerService();
         URL resource = getClass().getClassLoader().getResource("assets/page1.html");
         urlFirstPage = resource.toURI().toString();
     }

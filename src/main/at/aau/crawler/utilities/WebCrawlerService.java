@@ -9,8 +9,6 @@ import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -20,10 +18,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CrawlerImpl implements Crawler {
+public class WebCrawlerService implements Crawler {
     private List<String> alreadyVisitedUrls;
 
-    public CrawlerImpl() {
+    public WebCrawlerService() {
         this.alreadyVisitedUrls = new ArrayList<>();
     }
 
@@ -133,35 +131,51 @@ public class CrawlerImpl implements Crawler {
      * @return List<Website>
      */
     private List<Website> trackVisitedWebsites(Website website, int maxDepth, List<String> domains) {
-       List<Website> visitedWebsites = new ArrayList<>();
+        List<Website> visitedWebsites = new ArrayList<>();
 
-        List<String> linksToVisit = this.filterLinksToVisit(website.getLinks(), domains);
-
+        List<String> linksToVisit = filterLinksToVisit(website.getLinks(), domains);
         if (linksToVisit == null) {
             return visitedWebsites;
         }
 
-        linksToVisit.forEach(url -> {
-            url = this.trimUrl(url);
+        for (String link : linksToVisit) {
+            String sanitizedLink = trimUrl(link);
 
-            if (!this.alreadyVisitedUrls.contains(url)) {
-                this.alreadyVisitedUrls.add(url);
-                Website visitedWebsite = this.extractLinksAndHeading(url, website.getDepth() + 1);
-                visitedWebsite.setParentUrl(website.getOwnUrl());
-                visitedWebsites.add(visitedWebsite);
+            if (isNewUrl(sanitizedLink)) {
+                Website linkedWebsite = visitWebsite(sanitizedLink, website);
+                visitedWebsites.add(linkedWebsite);
             }
-        });
+        }
 
-        if (!visitedWebsites.isEmpty() && visitedWebsites.get(0).getDepth() < maxDepth) {
+        if (shouldCrawlDeeper(visitedWebsites, maxDepth)) {
             List<Website> newVisitedWebsites = new ArrayList<>();
-            visitedWebsites.forEach(visitedWebsite -> {
-                if (!visitedWebsite.isBroken()) {
-                    newVisitedWebsites.addAll(trackVisitedWebsites(visitedWebsite, maxDepth, domains));
+            for (Website childWebsite : visitedWebsites) {
+                if (!childWebsite.isBroken()) {
+                    newVisitedWebsites.addAll(trackVisitedWebsites(childWebsite, maxDepth, domains));
                 }
-            });
+            }
             visitedWebsites.addAll(newVisitedWebsites);
         }
+
         return visitedWebsites;
+    }
+
+    private boolean isNewUrl(String url) {
+        if (!alreadyVisitedUrls.contains(url)) {
+            alreadyVisitedUrls.add(url);
+            return true;
+        }
+        return false;
+    }
+
+    private Website visitWebsite(String url, Website parentWebsite) {
+        Website website = extractLinksAndHeading(url, parentWebsite.getDepth() + 1);
+        website.setParentUrl(parentWebsite.getOwnUrl());
+        return website;
+    }
+
+    private boolean shouldCrawlDeeper(List<Website> websites, int maxDepth) {
+        return !websites.isEmpty() && websites.get(0).getDepth() < maxDepth;
     }
 
     /**
@@ -194,9 +208,9 @@ public class CrawlerImpl implements Crawler {
      * @return
      */
     private String trimUrl(String url) {
-        if (url.charAt(url.length() -1) == '/' ||
-                url.charAt(url.length() -1) == '#') {
-            url = url.substring(0, url.length() - 1);
+        if (url == null || url.isEmpty()) return url;
+        if (url.endsWith("/") || url.endsWith("#")) {
+            return url.substring(0, url.length() - 1);
         }
         return url;
     }

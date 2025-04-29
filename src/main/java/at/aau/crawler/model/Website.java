@@ -1,4 +1,4 @@
-package aau.crawler.model;
+package at.aau.crawler.model;
 
 import java.util.List;
 
@@ -9,8 +9,6 @@ public class Website {
     List<Heading> headings;
     List<String> links;
     boolean isBroken;
-
-    public Website() {}
 
     public Website(int depth, List<Heading> headings, List<String> links, String ownUrl) {
         this.depth = depth;
@@ -28,36 +26,20 @@ public class Website {
         return depth;
     }
 
-    public void setDepth(int depth) {
-        this.depth = depth;
-    }
-
     public List<Heading> getHeadings() {
         return headings;
-    }
-
-    public void setHeadings(List<Heading> headings) {
-        this.headings = headings;
     }
 
     public List<String> getLinks() {
         return links;
     }
 
-    public void setLinks(List<String> links) {
-        this.links = links;
+    public String getParentUrl() {
+        return parentUrl;
     }
 
     public String getOwnUrl() {
         return ownUrl;
-    }
-
-    public void setOwnUrl(String ownUrl) {
-        this.ownUrl = ownUrl;
-    }
-
-    public String getParentUrl() {
-        return parentUrl;
     }
 
     public void setParentUrl(String parentUrl) {
@@ -66,10 +48,6 @@ public class Website {
 
     public boolean isBroken() {
         return isBroken;
-    }
-
-    public void setBroken(boolean broken) {
-        isBroken = broken;
     }
 
     @Override
@@ -91,6 +69,11 @@ public class Website {
             sb.append("Parenturl: ").append(parentUrl).append("\n");
         }
         sb.append("Depth: ").append(depth).append("\n\n");
+
+        if (isBroken){
+            sb.append("Broken Website").append("\n\n\n");
+            return sb.toString();
+        }
 
         for (Heading heading : headings){
             sb.append("<").append(heading.type).append(">");

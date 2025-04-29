@@ -1,4 +1,4 @@
-package aau.crawler.model;
+package at.aau.crawler.model;
 
 public class Heading {
     String type;
@@ -7,10 +7,6 @@ public class Heading {
     public Heading(String type, String value) {
         this.type = type;
         this.value = value;
-    }
-
-    public String getType() {
-        return type;
     }
 
     public String getValue() {

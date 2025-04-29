@@ -9,18 +9,25 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CrawlerTest {
 
     private Crawler crawler;
+    private String urlFirstPage;
 
     @BeforeEach
-    public void setUp() {
+    public void setUp() throws URISyntaxException {
         crawler = new CrawlerImpl();
+        URL resource = getClass().getClassLoader().getResource("assets/page1.html");
+        urlFirstPage = resource.toURI().toString();
     }
 
     @Test
@@ -36,32 +43,36 @@ public class CrawlerTest {
     }
 
     @Test
-    void shouldExtractLinksAndHeadings() {
-        String url = "https://example.com/";
-        List<String> expectedLinks = List.of("https://www.iana.org/domains/example");
-        List<String> allowedDomains = List.of("https://www.iana.org/domains/example");
+    public void passCrawlLocalWebsite() {
+        List<String> allowedDomains = List.of("file", "NOMATCH");
 
-        List<Website> result = crawler.crawlWebsite(url, 1, allowedDomains);
+        List<Website> websites = crawler.crawlWebsite(urlFirstPage, 5, allowedDomains);
 
-        assertNotNull(result);
-        assertFalse(result.isEmpty());
+        String[] expectedLinks = {"page1.html", "page2.html", "page3.html"};
+        String[] expectedHeadings = {"Welcome to Page 1"};
 
-        Website website = result.get(0);
-        System.out.println(website);
-
-        assertTrue(website.getLinks().containsAll(expectedLinks));
-        assertEquals("Example Domain", website.getHeadings().get(0).getValue());
+        checkWebsites(expectedHeadings, expectedLinks, 5, websites);
     }
 
     @Test
-    void shouldReturnEmptyListForInvalidUrl() {
+    void shouldExtractLinksAndHeadings() {
+        List<Website> result = crawler.crawlWebsite(urlFirstPage, 1, null);
+
+        String[] expectedHeadings = {"Welcome to Page 1"};
+        String[] expectedLinks = {"page12.html", "page3.html"};
+
+        checkWebsites(expectedHeadings, expectedLinks, 1, result);
+    }
+
+    @Test
+    void shouldReturnNullForInvalidUrl() {
         List<Website> result = crawler.crawlWebsite("invalid_url", 1, List.of());
         assertNull(result);
     }
 
     @Test
-    void shouldNotCrawlIfDepthIsLessThanZero() {
-        List<Website> result = crawler.crawlWebsite("https://example.com/", -1, List.of());
+    void shouldReturnNullIfDepthIsLessThanZero() {
+        List<Website> result = crawler.crawlWebsite(urlFirstPage, -1, List.of());
         assertNull(result);
     }
 
@@ -71,9 +82,11 @@ public class CrawlerTest {
                 new Website(1, List.of(), List.of(), "https://example.com"),
                 new Website(2, List.of(), List.of(), "https://testWebseite.com")
         );
-        String testDirectory = "src/main/at/aau/crawler/testFiles";
+        String testDirectory = "src/test/at/aau/crawler/testFiles";
+
         boolean result = crawler.printWebsitesToFile(websites, "websites.md", testDirectory);
         assertTrue(result);
+
         Path directoryPath = Paths.get(testDirectory);
         Path filePath = directoryPath.resolve("websites.md");
 
@@ -88,5 +101,28 @@ public class CrawlerTest {
         String testDirectory = "//src/main/at/aau/crawler/testFiles";
         boolean result = crawler.printWebsitesToFile(null, "websites.md", testDirectory);
         assertFalse(result);
+    }
+
+    @Test
+    void testFilterLinksToVisitNullInputs() throws URISyntaxException {
+        URL resource = getClass().getClassLoader().getResource("assets/pageNoLinks.html");
+        String url = resource.toURI().toString();
+        crawler.crawlWebsite(url, 1, null);
+    }
+
+    private void checkWebsites(String[] expectedHeadings, String[] expectedLinks, int expectedSize, List<Website> websites) {
+        assertEquals(expectedSize, websites.size());
+
+        assertTrue(websites.stream().anyMatch(website ->
+                website.getHeadings().stream().anyMatch(heading ->
+                        Arrays.asList(expectedHeadings).contains(heading.getValue())
+                )
+        ));
+
+        assertTrue(websites.stream().anyMatch(website ->
+                website.getLinks().stream().anyMatch(link ->
+                        Arrays.stream(expectedLinks).anyMatch(expectedLink -> link.contains(expectedLink))
+                )
+        ));
     }
 }

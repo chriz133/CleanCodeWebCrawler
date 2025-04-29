@@ -12,6 +12,7 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -47,9 +48,8 @@ public class CrawlerImpl implements Crawler {
     public boolean printWebsitesToFile(List<Website> websites, String filename, String path) {
         try {
             Path directory = Paths.get(path);
-            System.out.println(directory);
+
             if (!Files.exists(directory)) {
-                System.out.println("Existiert nicht");
                 Files.createDirectories(directory);
             }
 
@@ -69,7 +69,8 @@ public class CrawlerImpl implements Crawler {
 
     private Website extractLinksAndHeading(String url, int newDepth) {
         try {
-            Document doc = Jsoup.connect(url).get();
+//            Document doc = Jsoup.connect(url).get();
+            Document doc = Jsoup.parse(new URL(url).openStream(), "UTF-8", url);
             List<Heading> headlines = new ArrayList<>();
             for (int i = 1; i <= 4; i++) {
                 for (Element element : doc.select("h" + i)) {
@@ -77,6 +78,7 @@ public class CrawlerImpl implements Crawler {
                 }
             }
             Elements extractedLinks = doc.select("a[href]");
+            System.out.println("asd" + extractedLinks.stream().map(l -> l.attr("abs:href")).collect(Collectors.toList()).size());
 
             Website website = new Website(newDepth,
                                           headlines,
@@ -93,6 +95,10 @@ public class CrawlerImpl implements Crawler {
        List<Website> visitedWebsites = new ArrayList<>();
 
         List<String> linksToVisit = this.filterLinksToVisit(website.getLinks(), domains);
+
+        if (linksToVisit == null) {
+            return visitedWebsites;
+        }
 
         linksToVisit.forEach(url -> {
             url = this.trimUrl(url);
@@ -118,6 +124,10 @@ public class CrawlerImpl implements Crawler {
     }
 
     private List<String> filterLinksToVisit(List<String> links, List<String> domains) {
+        if (domains == null) {
+            return null;
+        }
+
         List<String> linksToVisit = new ArrayList<>();
 
         for (String link : links) {

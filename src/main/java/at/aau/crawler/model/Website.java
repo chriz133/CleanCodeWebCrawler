@@ -34,6 +34,10 @@ public class Website {
         return links;
     }
 
+    public String getParentUrl() {
+        return parentUrl;
+    }
+
     public String getOwnUrl() {
         return ownUrl;
     }

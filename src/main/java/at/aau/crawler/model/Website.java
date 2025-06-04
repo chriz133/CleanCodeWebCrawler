@@ -81,33 +81,52 @@ public class Website {
     public String printDetails(){
         StringBuilder sb = new StringBuilder();
 
-        sb.append("Ownurl: ").append(ownUrl).append("\n");
+        printOwnUrl(sb);
+        printParentUrl(sb);
+        printDepth(sb);
+        printIsBroken(sb);
+        printHeadings(sb);
+        printLinks(sb);
+
+        return sb.toString();
+    }
+
+    public void printParentUrl(StringBuilder sb){
         if (this.parentUrl != null){
             sb.append("Parenturl: ").append(parentUrl).append("\n");
         }
-        sb.append("Depth: ").append(depth).append("\n\n");
+    }
 
-        if (isBroken){
-            sb.append("Broken Website").append("\n\n\n");
-            return sb.toString();
-        }
-
+    public void printOwnUrl(StringBuilder sb){
+        sb.append("Ownurl: ").append(ownUrl).append("\n");
+    }
+    public void printHeadings(StringBuilder sb){
         for (Heading heading : headings){
             sb.append("<").append(heading.type).append(">");
             sb.append(heading.value);
             sb.append("</").append(heading.type).append(">\n");
         }
-
         sb.append("\n");
+    }
 
+    public void printLinks(StringBuilder sb){
         for (String link : links){
             sb.append("<").append("a").append(">");
             sb.append(link);
             sb.append("</").append("a").append(">\n");
         }
-
         sb.append("\n\n");
-
-        return sb.toString();
     }
+
+    public void printIsBroken(StringBuilder sb){
+        if (isBroken){
+            sb.append("Broken Website").append("\n\n\n");
+        }
+    }
+
+    public void printDepth(StringBuilder sb){
+        sb.append("Depth: ").append(depth).append("\n\n");
+    }
+
+
 }

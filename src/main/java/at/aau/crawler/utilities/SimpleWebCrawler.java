@@ -6,6 +6,7 @@ import at.aau.crawler.model.Website;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.IOException;
 import java.net.URI;
@@ -17,10 +18,8 @@ import java.util.stream.Collectors;
 
 public class SimpleWebCrawler implements Crawler {
 
-    // ✅ Thread-safe for concurrent access
     private final Set<String> alreadyVisitedUrls = ConcurrentHashMap.newKeySet();
 
-    // ✅ Executor with queue to prevent thread starvation
     private final ExecutorService executor = new ThreadPoolExecutor(
             100, 100,
             60L, TimeUnit.SECONDS,
@@ -30,7 +29,6 @@ public class SimpleWebCrawler implements Crawler {
     private final AtomicInteger activeTasks = new AtomicInteger(0);
     private final Object lock = new Object();
 
-    // ✅ Thread-safe result list
     private final List<Website> result = Collections.synchronizedList(new ArrayList<>());
 
     @Override
@@ -51,6 +49,7 @@ public class SimpleWebCrawler implements Crawler {
         }
 
         executor.shutdown();
+
         try {
             executor.awaitTermination(60, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
@@ -63,9 +62,7 @@ public class SimpleWebCrawler implements Crawler {
 
     private void submitCrawl(String url, int currentDepth, int maxDepth, List<String> domains, Website parent) {
         String sanitizedUrl = trimUrl(url);
-        System.out.println("URL: " + sanitizedUrl);
 
-        // ✅ Avoid revisiting the same link
         if (!alreadyVisitedUrls.add(sanitizedUrl)) return;
 
         activeTasks.incrementAndGet();
@@ -78,8 +75,6 @@ public class SimpleWebCrawler implements Crawler {
                 }
 
                 result.add(site);
-
-//                System.out.println("[DEPTH " + currentDepth + "] " + sanitizedUrl); // Debug output
 
                 if (!site.isBroken() && currentDepth <= maxDepth) {
                     List<String> links = filterLinksToVisit(site.getLinks(), domains);
@@ -101,24 +96,25 @@ public class SimpleWebCrawler implements Crawler {
         });
     }
 
-    private Website extractLinksAndHeading(String url, int depth) {
+    private Website extractLinksAndHeading(String url, int newDepth) {
         try {
             Document doc = Jsoup.parse(new URL(url).openStream(), "UTF-8", url);
             List<Heading> headlines = new ArrayList<>();
-
             for (int i = 1; i <= 4; i++) {
                 for (Element element : doc.select("h" + i)) {
                     headlines.add(new Heading("h" + i, element.text()));
                 }
             }
+            Elements extractedLinks = doc.select("a[href]");
 
-            List<String> links = doc.select("a[href]").stream()
-                    .map(e -> e.attr("abs:href"))
-                    .collect(Collectors.toList());
-
-            return new Website(depth, headlines, links, url);
+            Website website = new Website(newDepth,
+                    headlines,
+                    extractedLinks.stream().map(l -> l.attr("abs:href")).collect(Collectors.toList()),
+                    url);
+            return website;
         } catch (IOException | IllegalArgumentException e) {
-            return new Website(url); // broken
+            Website brokenWebsite = new Website(url);
+            return brokenWebsite;
         }
     }
 
@@ -135,6 +131,9 @@ public class SimpleWebCrawler implements Crawler {
         if (url == null || url.isEmpty()) return url;
         if (url.endsWith("/") || url.endsWith("#")) {
             return url.substring(0, url.length() - 1);
+        }
+        if (url.contains("#")) {
+            return url.substring(0, url.indexOf("#"));
         }
         return url;
     }

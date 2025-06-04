@@ -61,9 +61,10 @@ public class SimpleWebCrawlerTest {
     }
 
     @Test
-    void shouldReturnNullForInvalidUrl() {
+    void shouldReturnBrokenWebsiteForInvalidUrl() {
         List<Website> result = crawler.crawlWebsite("invalid_url", 1, List.of());
-        assertNull(result);
+        assertEquals(1, result.size());
+        assertTrue(result.get(0).isBroken());
     }
 
     @Test

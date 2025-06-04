@@ -22,7 +22,7 @@ import java.util.stream.Collectors;
 
 public class SimpleWebCrawler implements Crawler {
     private final Set<String> alreadyVisitedUrls = ConcurrentHashMap.newKeySet();
-    private final ExecutorService executor = Executors.newFixedThreadPool(10);
+    private final ExecutorService executor = Executors.newFixedThreadPool(50);
     private final AtomicInteger activeTasks = new AtomicInteger(0);
     private final Object lock = new Object();
 

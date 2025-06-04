@@ -39,7 +39,7 @@ class WebsiteTest {
         Website website = new Website("https://child.example.com");
         website.setParentUrl("https://parent.example.com");
 
-        assertEquals("https://parent.example.com", website.getParentUrl()); // Direct field access (or via getter if you add one)
+        assertEquals("https://parent.example.com", website.getParentUrl());
     }
 
     @Test

@@ -12,6 +12,9 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -24,9 +27,12 @@ import java.util.stream.Collectors;
  */
 public class SimpleWebCrawler implements Crawler {
     private List<String> alreadyVisitedUrls;
+    private ExecutorService executor;
 
     public SimpleWebCrawler() {
         this.alreadyVisitedUrls = new ArrayList<>();
+//        this.executor = Executors.newFixedThreadPool(Runtime.getRuntime().availableProcessors());
+        this.executor = Executors.newFixedThreadPool(1);
     }
 
     @Override
@@ -43,6 +49,15 @@ public class SimpleWebCrawler implements Crawler {
         List<Website> websites = trackVisitedWebsites(website, maxDepth, domains);
         websites.add(0, website);
         this.alreadyVisitedUrls.clear();
+        this.executor.shutdown();
+        try {
+            if (!executor.awaitTermination(300, TimeUnit.SECONDS)) {
+                executor.shutdownNow(); // Force shutdown if needed
+            }
+        } catch (InterruptedException e) {
+            executor.shutdownNow();
+            Thread.currentThread().interrupt();
+        }
         return websites;
     }
 
@@ -104,8 +119,12 @@ public class SimpleWebCrawler implements Crawler {
             String sanitizedLink = trimUrl(link);
 
             if (isNewUrl(sanitizedLink)) {
-                Website linkedWebsite = visitWebsite(sanitizedLink, website);
-                visitedWebsites.add(linkedWebsite);
+                executor.submit(() -> {
+                     Website linkedWebsite = visitWebsite(sanitizedLink, website);
+                     visitedWebsites.add(linkedWebsite);
+                });
+//                Website linkedWebsite = visitWebsite(sanitizedLink, website);
+//                visitedWebsites.add(linkedWebsite);
             }
         }
 

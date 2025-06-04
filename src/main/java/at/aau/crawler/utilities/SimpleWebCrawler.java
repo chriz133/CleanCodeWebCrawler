@@ -46,17 +46,15 @@ public class SimpleWebCrawler implements Crawler {
         return websites;
     }
 
-    /**
+    /*
      * First connects to @param url via Jsoup and loads corresponding html document.
      * All headings from h1 to h4 are stored in a new List oh Headings.
      * Every link of the website is stored in an element-list and is later
      * converted to an absolute link (f.e. /sport to https://example.com/sport).
      * The stream enables sequential and parallel operation on the elements and
-     * with map() each element gets addressed.
-     *
-     * @param url           the starting URL to crawl
-     * @param newDepth      the new maximum recursion depth to crawl
-     * @return Website      returning Website with links and headings
+     * with map() each element gets addressed."url" is the starting URL to crawl,
+     * "newDepth" is the new maximum recursion depth to crawl and after success
+     *  a Website with links and headings is returned.
      */
     private Website extractLinksAndHeading(String url, int newDepth) {
         try {
@@ -80,17 +78,15 @@ public class SimpleWebCrawler implements Crawler {
         }
     }
 
-    /**
+    /*
      * visitedWebsites contains all websites for the current root url.
      * linksToVisit has all links of the root url that must be visited.
      * For each link to visit it is checked if it has already been visited
      * since it can only be visited once. Furthermore, each link recursively
-     * calls visitWebsite() and is in this case the new root url.
-     *
-     * @param website           websites to retrieve its links
-     * @param maxDepth          the maximum recursion depth to crawl
-     * @param domains           domains to be crawled
-     * @return List<Website>    visited websites are returned
+     * calls visitWebsite() and is in this case the new root url. "websites"
+     * are the websites from which to retrieve the links and "domains" are
+     * the corresponding domains from the website. All visited websites are
+     * returned.
      */
     private List<Website> trackVisitedWebsites(Website website, int maxDepth, List<String> domains) {
         List<Website> visitedWebsites = new ArrayList<>();
@@ -122,11 +118,8 @@ public class SimpleWebCrawler implements Crawler {
         return visitedWebsites;
     }
 
-    /**
+    /*
      * Checks if the given URL was already visited. If not, marks it as visited.
-     *
-     * @param url the URL to check
-     * @return true if it's a new URL, false if it was already visited
      */
     private boolean isNewUrl(String url) {
         if (!alreadyVisitedUrls.contains(url)) {
@@ -136,12 +129,8 @@ public class SimpleWebCrawler implements Crawler {
         return false;
     }
 
-    /**
+    /*
      * Visits the given URL, extracts its content, and links it to the parent website.
-     *
-     * @param url           the URL to visit
-     * @param parentWebsite the parent {@link Website} object
-     * @return the newly visited {@link Website}
      */
     private Website visitWebsite(String url, Website parentWebsite) {
         Website website = extractLinksAndHeading(url, parentWebsite.getDepth() + 1);
@@ -149,22 +138,15 @@ public class SimpleWebCrawler implements Crawler {
         return website;
     }
 
-    /**
+    /*
      * Determines if further recursive crawling should occur based on current depth and maxDepth.
-     *
-     * @param websites list of websites just visited
-     * @param maxDepth the maximum depth allowed
-     * @return true if recursion should continue, false otherwise
      */
     private boolean shouldCrawlDeeper(List<Website> websites, int maxDepth) {
         return !websites.isEmpty() && websites.get(0).getDepth() < maxDepth;
     }
 
-    /**
+    /*
      * Checks if the link contains the allowed domains.
-     * @param links     links which should contain given domains
-     * @param domains   domains should occur in given links
-     * @return          list of links that should be visited with given domains
      */
     private List<String> filterLinksToVisit(List<String> links, List<String> domains) {
         if (domains == null) {
@@ -183,11 +165,8 @@ public class SimpleWebCrawler implements Crawler {
         return linksToVisit;
     }
 
-    /**
+    /*
      * Cleans a URL by removing trailing slashes or hash symbols.
-     *
-     * @param url the URL to sanitize
-     * @return a trimmed version of the URL without trailing slashes or hashes
      */
     private String trimUrl(String url) {
         if (url == null || url.isEmpty()) return url;

@@ -8,34 +8,37 @@ import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 
 import java.io.IOException;
+import java.net.URI;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Set;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
+import java.util.*;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 public class SimpleWebCrawler implements Crawler {
+
+    // ✅ Thread-safe for concurrent access
     private final Set<String> alreadyVisitedUrls = ConcurrentHashMap.newKeySet();
-    private final ExecutorService executor = Executors.newFixedThreadPool(50);
+
+    // ✅ Executor with queue to prevent thread starvation
+    private final ExecutorService executor = new ThreadPoolExecutor(
+            100, 100,
+            60L, TimeUnit.SECONDS,
+            new LinkedBlockingQueue<>()
+    );
+
     private final AtomicInteger activeTasks = new AtomicInteger(0);
     private final Object lock = new Object();
 
+    // ✅ Thread-safe result list
     private final List<Website> result = Collections.synchronizedList(new ArrayList<>());
 
     @Override
     public List<Website> crawlWebsite(String url, int maxDepth, List<String> domains) {
-        if (maxDepth < 1 || url == null || url.isEmpty()) return List.of();
+        if (maxDepth < 1 || url == null || url.isEmpty()) return null;
 
-        // Submit root URL
         submitCrawl(url, 1, maxDepth, domains, null);
 
-        // Wait until all tasks finish
         synchronized (lock) {
             while (activeTasks.get() > 0) {
                 try {
@@ -60,9 +63,12 @@ public class SimpleWebCrawler implements Crawler {
 
     private void submitCrawl(String url, int currentDepth, int maxDepth, List<String> domains, Website parent) {
         String sanitizedUrl = trimUrl(url);
-        if (!alreadyVisitedUrls.add(sanitizedUrl)) return; // Skip already visited
+        System.out.println("URL: " + sanitizedUrl);
 
-        activeTasks.incrementAndGet(); // Track this task
+        // ✅ Avoid revisiting the same link
+        if (!alreadyVisitedUrls.add(sanitizedUrl)) return;
+
+        activeTasks.incrementAndGet();
 
         executor.submit(() -> {
             try {
@@ -70,9 +76,12 @@ public class SimpleWebCrawler implements Crawler {
                 if (parent != null) {
                     site.setParentUrl(parent.getOwnUrl());
                 }
+
                 result.add(site);
 
-                if (!site.isBroken() && currentDepth < maxDepth) {
+//                System.out.println("[DEPTH " + currentDepth + "] " + sanitizedUrl); // Debug output
+
+                if (!site.isBroken() && currentDepth <= maxDepth) {
                     List<String> links = filterLinksToVisit(site.getLinks(), domains);
                     if (links != null) {
                         for (String link : links) {
@@ -109,20 +118,25 @@ public class SimpleWebCrawler implements Crawler {
 
             return new Website(depth, headlines, links, url);
         } catch (IOException | IllegalArgumentException e) {
-            return new Website(url); // Mark as broken
+            return new Website(url); // broken
         }
     }
 
     private List<String> filterLinksToVisit(List<String> links, List<String> domains) {
         if (domains == null || links == null) return List.of();
         return links.stream()
-                .filter(link -> domains.stream().anyMatch(link::contains))
+                .map(String::toLowerCase)
+                .filter(link -> domains.stream().anyMatch(domain -> link.contains(domain.toLowerCase())))
                 .distinct()
                 .collect(Collectors.toList());
     }
 
     private String trimUrl(String url) {
         if (url == null) return null;
-        return url.replaceAll("[/#]+$", "");
+        try {
+            return new URI(url).normalize().toString().split("#")[0]; // remove fragments
+        } catch (Exception e) {
+            return url;
+        }
     }
 }

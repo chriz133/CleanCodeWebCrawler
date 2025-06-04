@@ -44,7 +44,9 @@ public class SimpleWebCrawlerTest {
         List<Website> websites = crawler.crawlWebsite(urlFirstPage, 5, allowedDomains);
         String[] expectedLinks = {"page1.html", "page2.html", "page3.html"};
         String[] expectedHeadings = {"Welcome to Page 1"};
-
+        for (Website website : websites) {
+            System.out.println(website);
+        }
         checkWebsites(expectedHeadings, expectedLinks, 5, websites);
     }
 

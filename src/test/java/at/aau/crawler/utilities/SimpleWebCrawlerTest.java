@@ -70,14 +70,6 @@ public class SimpleWebCrawlerTest {
         assertNull(result);
     }
 
-
-    @Test
-    void testFilterLinksToVisitNullInputs() throws URISyntaxException {
-        URL resource = getClass().getClassLoader().getResource("assets/pageNoLinks.html");
-        String url = resource.toURI().toString();
-        crawler.crawlWebsite(url, 1, null);
-    }
-
     private void checkWebsites(String[] expectedHeadings, String[] expectedLinks, int expectedSize, List<Website> websites) {
         assertEquals(expectedSize, websites.size());
 

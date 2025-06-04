@@ -132,11 +132,10 @@ public class SimpleWebCrawler implements Crawler {
     }
 
     private String trimUrl(String url) {
-        if (url == null) return null;
-        try {
-            return new URI(url).normalize().toString().split("#")[0]; // remove fragments
-        } catch (Exception e) {
-            return url;
+        if (url == null || url.isEmpty()) return url;
+        if (url.endsWith("/") || url.endsWith("#")) {
+            return url.substring(0, url.length() - 1);
         }
+        return url;
     }
 }

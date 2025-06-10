@@ -8,15 +8,22 @@ import java.nio.file.Paths;
 
 public class FileWriterService {
 
-    public void writeToFile(String content, String filename, String path) throws IOException {
+    public boolean writeToFile(String content, String filename, String path) {
         Path directory = Paths.get(path);
-        if (!Files.exists(directory)) {
-            Files.createDirectories(directory);
+        try {
+            if (!Files.exists(directory)) {
+                Files.createDirectories(directory);
+            }
+            Path filePath = directory.resolve(filename);
+            try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
+                writer.write(content);
+            }
+            return true;
+        }catch (IOException e) {
+            return false;
         }
 
-        Path filePath = directory.resolve(filename);
-        try (BufferedWriter writer = Files.newBufferedWriter(filePath)) {
-            writer.write(content);
-        }
+
+
     }
 }

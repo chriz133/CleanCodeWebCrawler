@@ -1,6 +1,7 @@
 package at.aau.crawler.main;
 
 
+import at.aau.crawler.adapter.JsoupHtmlParser;
 import at.aau.crawler.services.WebCrawlerService;
 import at.aau.crawler.writer.MarkdownWebsiteWriter;
 import at.aau.crawler.core.ConcurrentWebCrawler;
@@ -24,7 +25,7 @@ public class WebCrawler {
 
         System.out.println("Website gets crawled and saved... Please wait...");
 
-        WebCrawlerService service = new WebCrawlerService(new ConcurrentWebCrawler(), new MarkdownWebsiteWriter());
+        WebCrawlerService service = new WebCrawlerService(new ConcurrentWebCrawler(new JsoupHtmlParser()), new MarkdownWebsiteWriter());
         boolean success = service.crawlAndSave(url, depth, domains, "src/main/java/at/aau/crawler/files");
 
         if (success) {

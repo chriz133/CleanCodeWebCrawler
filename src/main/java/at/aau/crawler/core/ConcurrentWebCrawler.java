@@ -1,15 +1,12 @@
 package at.aau.crawler.core;
 
 import at.aau.crawler.interfaces.Crawler;
+import at.aau.crawler.interfaces.HtmlParser;
+import at.aau.crawler.interfaces.WebDocument;
 import at.aau.crawler.model.Heading;
 import at.aau.crawler.model.Website;
 import at.aau.crawler.utilities.UrlUtils;
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -18,20 +15,24 @@ import java.util.stream.Collectors;
 
 public class ConcurrentWebCrawler implements Crawler {
 
+    private final HtmlParser parser;
     private final Set<String> alreadyVisitedUrls = ConcurrentHashMap.newKeySet();
     private final ExecutorService executor = new ThreadPoolExecutor(
             100, 100,
             60L, TimeUnit.SECONDS,
             new LinkedBlockingQueue<>()
     );
-
     private final AtomicInteger activeTasks = new AtomicInteger(0);
     private final Object lock = new Object();
     private final List<Website> result = Collections.synchronizedList(new ArrayList<>());
 
+    public ConcurrentWebCrawler(HtmlParser parser) {
+        this.parser = parser;
+    }
+
     @Override
     public List<Website> crawlWebsite(String url, int maxDepth, List<String> domains) {
-        if (maxDepth < 1 || url == null || url.isEmpty()) return null;
+        if (maxDepth < 1 || url == null || url.isEmpty()) return List.of();
 
         submitCrawl(url, 1, maxDepth, domains, null);
 
@@ -63,30 +64,25 @@ public class ConcurrentWebCrawler implements Crawler {
 
     private Website extractWebsite(String url, int depth) {
         try {
-            Document doc = Jsoup.parse(new URL(url).openStream(), "UTF-8", url);
+            WebDocument doc = parser.parse(url);
             List<Heading> headings = extractHeadings(doc);
-            List<String> links = extractLinks(doc);
+            List<String> links = doc.getLinks();
             return new Website(depth, headings, links, url);
-        } catch (IOException | IllegalArgumentException e) {
+        } catch (Exception e) {
             return new Website(url); // Broken website
         }
     }
 
-    protected List<Heading> extractHeadings(Document doc) {
+    protected List<Heading> extractHeadings(WebDocument doc) {
         List<Heading> headings = new ArrayList<>();
         for (int i = 1; i <= 4; i++) {
-            for (Element el : doc.select("h" + i)) {
-                headings.add(new Heading("h" + i, el.text()));
+            String tag = "h" + i;
+            String text = doc.getTextFromHeading(tag);
+            if (text != null && !text.isEmpty()) {
+                headings.add(new Heading(tag, text));
             }
         }
         return headings;
-    }
-
-    protected List<String> extractLinks(Document doc) {
-        return doc.select("a[href]")
-                .stream()
-                .map(link -> link.attr("abs:href"))
-                .collect(Collectors.toList());
     }
 
     protected List<String> filterLinksToVisit(List<String> links, List<String> domains) {

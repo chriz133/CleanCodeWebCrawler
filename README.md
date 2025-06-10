@@ -1,13 +1,19 @@
 # Web-Crawler
 
-This project implements a Web-Crawler, which provides a compact overview of the given website and linked websites by only listing the headings and the links.
+This project implements a Web-Crawler, which provides a compact overview of the given website and linked websites by only listing the headings and the links. A ThreadPoolExecutor is used to regulate how many threads are started and runned. After all threads have finished, the report is written. If any errors accure during runtime, they are also logged in the report. 
+To gurantee SRP, OCP, DIP, cohesion, coupling and LoD as much as possible, the code is splitted in multiple classes and interfaces.  
 
 ## Features
 - **Extract Headings and Links**: Collects all headings (`<h1>` to `<h6>`) and links from the input URL
 - **Recursive Crawling**: Visits all links up to a certain depth and filters them based on specified domains (each website is crawled only once)
 - **Broken Link Detection**: Highlights broken links
 - **Markdown File**: The results is stored in a single markdown file (.md extension)
-
+  
+## New Features
+- **Concurrent Crawling**: Same procedure as above but this time each website is processed by a separate thread.
+- **Combined Results**: The results are stored in a single report that retains the original structure of the websites.
+- **Error Handling**: Users are informed by logging the error message in the report, if there are any errors.
+- **Boundaries to Third-Party Libraries**: Jsoup HTML parser is one dependency that is used. For this dependency a new class is implemended which abstracts needed methods of Jsoup, to fullfill the abstractation level. This enables to switch libaries if neccessary, without changing the "main" class. Furthermore, it makes it easier to handle tests.
 
 ## Project Structure
 
@@ -16,17 +22,20 @@ src/
 ├── main/
 │   └── java/
 │       └── at/aau/crawler/
-│           ├── interfaces/   # Crawler and WebsiteWriter interfaces
-│           ├── model/        # Data models (Website, Heading)
-│           ├── services/     # WebCrawlerService class
-│           ├── utilities/    # SimpleWebCrawler, MarkdownWebsiteWriter
-│           └── main/         # WebCrawler (Main class with main method)
+│           ├── adapter/          # Adapters for third-party libraries (e.g., JsoupHtmlParser, JsoupWebDocument)
+│           ├── core/             # Core application logic (e.g., ConcurrentWebCrawler)
+│           ├── interfaces/       # Interfaces (e.g., Crawler, HtmlParser, WebDocument)
+│           ├── model/            # Data models (e.g., Website, Heading)
+│           ├── utilities/        # Utility classes (e.g., UrlUtils)
+│           └── main/             # Entry point (e.g., WebCrawler class with main method)
 └── test/
     └── java/
         └── at/aau/crawler/
-            ├── model/
-            ├── services/
-            └── utilities/
+            ├── adapter/          # Unit tests for adapter classes (e.g., JsoupHtmlParserTest)
+            ├── core/             # Unit tests for core logic (e.g., ConcurrentWebCrawlerTest)
+            ├── model/            # Unit tests for models (optional)
+            ├── interfaces/       # Tests or mocks for interfaces (optional, rarely needed)
+            └── utilities/        # Unit tests for utilities (e.g., UrlUtilsTest)
 ```
 
 ---
@@ -36,7 +45,7 @@ src/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/CleanCodeWebCrawler.git
+git clone https://github.com/chriz133/CleanCodeWebCrawler.git
 cd CleanCodeWebCrawler
 ```
 

@@ -52,6 +52,7 @@ public class WebCrawlerService {
 
     /*
      * Generates a unique filename based on the current timestamp.
+     * A filename in the format "output_yyyyMMdd_HHmmss.md" is returned.
      */
     private String generateFilename() {
         return "output_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".md";

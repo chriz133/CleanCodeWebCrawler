@@ -39,7 +39,7 @@ class FileWriterServiceTest {
     @Test
     void writeToFile_ShouldThrowException_WhenPathIsInvalid() {
         String invalidPath = "///invalid///path///";
-        assertThrows(IOException.class, () -> service.writeToFile("text", testFile, invalidPath));
+        assertFalse(service.writeToFile("text", testFile, invalidPath));
     }
 
     @Test

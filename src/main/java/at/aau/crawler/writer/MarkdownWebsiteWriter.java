@@ -23,12 +23,7 @@ public class MarkdownWebsiteWriter implements WebsiteWriter {
 
     @Override
     public boolean writeWebsites(List<Website> websites, String filename, String path) {
-        try {
-            String content = traverser.traverse(websites);
-            writerService.writeToFile(content, filename, path);
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
+        String content = traverser.traverse(websites);
+        return writerService.writeToFile(content, filename, path);
     }
 }

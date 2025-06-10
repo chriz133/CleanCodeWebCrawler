@@ -1,7 +1,5 @@
 package at.aau.crawler.model;
 
-import at.aau.crawler.utilities.UrlUtils;
-
 import java.util.List;
 
 public class Website {

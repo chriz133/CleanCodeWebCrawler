@@ -22,17 +22,20 @@ src/
 ├── main/
 │   └── java/
 │       └── at/aau/crawler/
-│           ├── interfaces/   # Crawler and WebsiteWriter interfaces
-│           ├── model/        # Data models (Website, Heading)
-│           ├── services/     # WebCrawlerService class
-│           ├── utilities/    # SimpleWebCrawler, MarkdownWebsiteWriter
-│           └── main/         # WebCrawler (Main class with main method)
+│           ├── adapter/          # Adapters for third-party libraries (e.g., JsoupHtmlParser, JsoupWebDocument)
+│           ├── core/             # Core application logic (e.g., ConcurrentWebCrawler)
+│           ├── interfaces/       # Interfaces (e.g., Crawler, HtmlParser, WebDocument)
+│           ├── model/            # Data models (e.g., Website, Heading)
+│           ├── utilities/        # Utility classes (e.g., UrlUtils)
+│           └── main/             # Entry point (e.g., WebCrawler class with main method)
 └── test/
     └── java/
         └── at/aau/crawler/
-            ├── model/
-            ├── services/
-            └── utilities/
+            ├── adapter/          # Unit tests for adapter classes (e.g., JsoupHtmlParserTest)
+            ├── core/             # Unit tests for core logic (e.g., ConcurrentWebCrawlerTest)
+            ├── model/            # Unit tests for models (optional)
+            ├── interfaces/       # Tests or mocks for interfaces (optional, rarely needed)
+            └── utilities/        # Unit tests for utilities (e.g., UrlUtilsTest)
 ```
 
 ---
@@ -42,7 +45,7 @@ src/
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/yourusername/CleanCodeWebCrawler.git
+git clone https://github.com/chriz133/CleanCodeWebCrawler.git
 cd CleanCodeWebCrawler
 ```
 

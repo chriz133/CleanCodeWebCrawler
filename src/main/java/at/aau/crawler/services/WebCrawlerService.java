@@ -50,10 +50,8 @@ public class WebCrawlerService {
         return writer.writeWebsites(websites, filename, path);
     }
 
-    /**
+    /*
      * Generates a unique filename based on the current timestamp.
-     *
-     * @return a filename in the format "output_yyyyMMdd_HHmmss.md"
      */
     private String generateFilename() {
         return "output_" + LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMdd_HHmmss")) + ".md";

@@ -90,16 +90,4 @@ public class Website {
         }
         return sb.toString();
     }
-
-    public String getFormattedLinks(String tabs) {
-        if (links == null) return "";
-        StringBuilder sb = new StringBuilder();
-        for (String link : links) {
-            sb.append(tabs)
-                    .append("Link --> ")
-                    .append(UrlUtils.trimUrl(link))
-                    .append("\n");
-        }
-        return sb.toString();
-    }
 }

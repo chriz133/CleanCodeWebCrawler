@@ -1,6 +1,8 @@
-package at.aau.crawler.utilities;
+package at.aau.crawler.writer;
 
 import at.aau.crawler.model.Website;
+import at.aau.crawler.utilities.TextUtils;
+import at.aau.crawler.utilities.UrlUtils;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -26,7 +28,7 @@ public class WebsiteTraverser {
 
         markAsVisited(website);
         StringBuilder currentOutput = new StringBuilder();
-        String tabs = formatter.getTabs(website.getDepth());
+        String tabs = TextUtils.getTabs(website.getDepth());
 
         appendWebsiteContent(website, tabs, currentOutput);
 

@@ -53,4 +53,23 @@ class WebsiteTest {
         assertTrue(result.contains("ownUrl='https://own.example.com'"));
         assertTrue(result.contains("links=[https://link.example.com]"));
     }
+
+    @Test
+    void formatsAllPartsCorrectly() {
+        Website site = new Website(1, List.of(new Heading("h1", "Header")), List.of("http://link.com"), "http://test.com");
+        site.setParentUrl("http://parent.com");
+
+        String tabs = "\t";
+
+        assertTrue(site.getFormattedUrl(tabs).contains("Ownurl: http://test.com"));
+        assertTrue(site.getFormattedParentUrl(tabs).contains("Parenturl: http://parent.com"));
+        assertTrue(site.getFormattedDepth(tabs).contains("Depth: 1"));
+        assertTrue(site.getFormattedHeadings(tabs).contains("<h1>Header</h1>"));
+    }
+
+    @Test
+    void formatsBrokenWebsiteNotice() {
+        Website broken = new Website("http://broken.com");
+        assertTrue(broken.getFormattedBrokenInfo("").contains("Broken Website"));
+    }
 }

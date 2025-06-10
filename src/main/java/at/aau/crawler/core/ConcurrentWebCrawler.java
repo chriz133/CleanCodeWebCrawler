@@ -1,8 +1,9 @@
-package at.aau.crawler.utilities;
+package at.aau.crawler.core;
 
 import at.aau.crawler.interfaces.Crawler;
 import at.aau.crawler.model.Heading;
 import at.aau.crawler.model.Website;
+import at.aau.crawler.utilities.UrlUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -12,9 +13,10 @@ import java.net.URL;
 import java.util.*;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 import java.util.stream.Collectors;
 
-public class SimpleWebCrawler implements Crawler {
+public class ConcurrentWebCrawler implements Crawler {
 
     private final Set<String> alreadyVisitedUrls = ConcurrentHashMap.newKeySet();
     private final ExecutorService executor = new ThreadPoolExecutor(
@@ -70,7 +72,7 @@ public class SimpleWebCrawler implements Crawler {
         }
     }
 
-    private List<Heading> extractHeadings(Document doc) {
+    protected List<Heading> extractHeadings(Document doc) {
         List<Heading> headings = new ArrayList<>();
         for (int i = 1; i <= 4; i++) {
             for (Element el : doc.select("h" + i)) {
@@ -80,20 +82,32 @@ public class SimpleWebCrawler implements Crawler {
         return headings;
     }
 
-    private List<String> extractLinks(Document doc) {
+    protected List<String> extractLinks(Document doc) {
         return doc.select("a[href]")
                 .stream()
                 .map(link -> link.attr("abs:href"))
                 .collect(Collectors.toList());
     }
 
-    private List<String> filterLinksToVisit(List<String> links, List<String> domains) {
+    protected List<String> filterLinksToVisit(List<String> links, List<String> domains) {
         if (domains == null || links == null) return List.of();
+
         return links.stream()
                 .map(String::toLowerCase)
-                .filter(link -> domains.stream().anyMatch(domain -> link.contains(domain.toLowerCase())))
+                .filter(domainFilter(domains))
                 .distinct()
                 .collect(Collectors.toList());
+    }
+
+    protected Predicate<String> domainFilter(List<String> domains) {
+        List<String> lowerDomains = domains.stream()
+                .map(String::toLowerCase)
+                .collect(Collectors.toList());
+        return link -> lowerDomains.stream().anyMatch(link::contains);
+    }
+
+    protected boolean shouldVisit(String sanitizedUrl) {
+        return alreadyVisitedUrls.add(sanitizedUrl);
     }
 
     private void scheduleSubLinks(Website site, int currentDepth, int maxDepth, List<String> domains) {
@@ -103,10 +117,6 @@ public class SimpleWebCrawler implements Crawler {
                 submitCrawl(link, currentDepth + 1, maxDepth, domains, site);
             }
         }
-    }
-
-    private boolean shouldVisit(String sanitizedUrl) {
-        return alreadyVisitedUrls.add(sanitizedUrl);
     }
 
     private void updateParent(Website site, Website parent) {

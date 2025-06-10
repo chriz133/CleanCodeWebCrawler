@@ -40,6 +40,89 @@ src/
 
 ---
 
+## Markdown Output
+
+The Markdown output represents the structure of a website and its subpages. It follows these rules:
+
+---
+
+### 1. Indentation by Depth
+
+Each page is indented according to its **crawl depth**:
+
+- `Depth: 1` → no indentation
+- `Depth: 2` → indented one level (tab or 4 spaces)
+- `Depth: 3` → indented two levels
+- etc.
+
+This makes the **link structure** of the site visually clear.
+
+---
+
+### 2. Links Are Shown Only at First Occurrence
+
+A new Website of a link (`Link --> https://...`) is **only displayed where it first appears**. If the same URL is encountered later, it is **not shown again**, unless it is discovered at a deeper depth for the first time.
+
+This keeps the output clean and avoids duplication and infinite loops.
+
+---
+
+### 3. Hierarchy via `Ownurl` and `Parenturl`
+
+Each page includes:
+
+- `Ownurl`: the URL of the current page
+- `Parenturl`: (only for depth > 1) the URL of the referring page
+
+This allows tracing **how the page was reached** and represents the crawl hierarchy.
+
+---
+
+### 4. Headings as Content Summary
+
+The page content is summarized using extracted HTML heading tags:
+
+```html
+<h1>...</h1>
+<h2>...</h2>
+<h3>...</h3>
+```
+
+This provides a quick overview of the **editorial content** of the page.
+
+---
+
+## Example (simplified)
+
+```markdown
+Ownurl: https://www.orf.at
+Depth: 1
+<h1>Main Headline</h1>
+<h2>Categories</h2>
+<h3>Other Topics</h3>
+
+Link --> https://wetter.orf.at
+
+    Ownurl: https://wetter.orf.at
+    Parenturl: https://www.orf.at
+    Depth: 2
+    <h1>Weather Overview</h1>
+    <h2>Region Selection</h2>
+```
+
+---
+## Summary
+
+```markdown
+- Each page is shown with its URL (`Ownurl`) and crawl depth (`Depth`).
+- HTML headings (`<h1>` to `<h3>`) are extracted and displayed.
+- Each link (`Link --> ...`) appears only once, where it was first discovered.
+- Repeated or known URLs are not listed again.
+- Deeper levels are indented to preserve structure.
+```
+
+---
+
 ## How to Build and Run
 
 ### 1. Clone the Repository

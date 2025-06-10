@@ -39,25 +39,7 @@ class WebsiteTest {
         Website website = new Website("https://child.example.com");
         website.setParentUrl("https://parent.example.com");
 
-        assertEquals("https://parent.example.com", website.getParentUrl()); // Direct field access (or via getter if you add one)
-    }
-
-    @Test
-    void printDetailsShouldFormatWebsiteDetailsCorrectly() {
-        Heading heading = new Heading("h1", "Sample Heading");
-        List<Heading> headings = List.of(heading);
-        List<String> links = List.of("https://example.com/link");
-
-        Website website = new Website(1, headings, links, "https://example.com");
-        website.setParentUrl("https://parent.example.com");
-
-        String output = website.printDetails();
-
-        assertTrue(output.contains("Ownurl: https://example.com"));
-        assertTrue(output.contains("Parenturl: https://parent.example.com"));
-        assertTrue(output.contains("Depth: 1"));
-        assertTrue(output.contains("<h1>Sample Heading</h1>"));
-        assertTrue(output.contains("<a>https://example.com/link</a>"));
+        assertEquals("https://parent.example.com", website.getParentUrl());
     }
 
     @Test
@@ -73,12 +55,21 @@ class WebsiteTest {
     }
 
     @Test
-    void printDetailsShouldReturnBrokenWebsiteDetailsCorrectly() {
-        Website website = new Website("https://child.example.com");
+    void formatsAllPartsCorrectly() {
+        Website site = new Website(1, List.of(new Heading("h1", "Header")), List.of("http://link.com"), "http://test.com");
+        site.setParentUrl("http://parent.com");
 
-        String output = website.printDetails();
+        String tabs = "\t";
 
-        assertTrue(website.isBroken());
-        assertTrue(output.contains("Broken Website"));
+        assertTrue(site.getFormattedUrl(tabs).contains("Ownurl: http://test.com"));
+        assertTrue(site.getFormattedParentUrl(tabs).contains("Parenturl: http://parent.com"));
+        assertTrue(site.getFormattedDepth(tabs).contains("Depth: 1"));
+        assertTrue(site.getFormattedHeadings(tabs).contains("<h1>Header</h1>"));
+    }
+
+    @Test
+    void formatsBrokenWebsiteNotice() {
+        Website broken = new Website("http://broken.com");
+        assertTrue(broken.getFormattedBrokenInfo("").contains("Broken Website"));
     }
 }

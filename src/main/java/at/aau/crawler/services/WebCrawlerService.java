@@ -43,6 +43,9 @@ public class WebCrawlerService {
      */
     public boolean crawlAndSave(String url, int depth, List<String> domains, String path) {
         List<Website> websites = crawler.crawlWebsite(url, depth, domains);
+        for (Website website : websites) {
+            System.out.println(website);
+        }
         String filename = generateFilename();
         return writer.writeWebsites(websites, filename, path);
     }

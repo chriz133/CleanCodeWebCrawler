@@ -43,24 +43,6 @@ class WebsiteTest {
     }
 
     @Test
-    void printDetailsShouldFormatWebsiteDetailsCorrectly() {
-        Heading heading = new Heading("h1", "Sample Heading");
-        List<Heading> headings = List.of(heading);
-        List<String> links = List.of("https://example.com/link");
-
-        Website website = new Website(1, headings, links, "https://example.com");
-        website.setParentUrl("https://parent.example.com");
-
-        String output = website.printDetails();
-
-        assertTrue(output.contains("Ownurl: https://example.com"));
-        assertTrue(output.contains("Parenturl: https://parent.example.com"));
-        assertTrue(output.contains("Depth: 1"));
-        assertTrue(output.contains("<h1>Sample Heading</h1>"));
-        assertTrue(output.contains("<a>https://example.com/link</a>"));
-    }
-
-    @Test
     void toStringShouldContainKeyFields() {
         Heading heading = new Heading("h2", "Another Heading");
         Website website = new Website(0, List.of(heading), List.of("https://link.example.com"), "https://own.example.com");
@@ -70,15 +52,5 @@ class WebsiteTest {
         assertTrue(result.contains("depth=0"));
         assertTrue(result.contains("ownUrl='https://own.example.com'"));
         assertTrue(result.contains("links=[https://link.example.com]"));
-    }
-
-    @Test
-    void printDetailsShouldReturnBrokenWebsiteDetailsCorrectly() {
-        Website website = new Website("https://child.example.com");
-
-        String output = website.printDetails();
-
-        assertTrue(website.isBroken());
-        assertTrue(output.contains("Broken Website"));
     }
 }

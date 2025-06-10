@@ -7,7 +7,12 @@ This project implements a Web-Crawler, which provides a compact overview of the 
 - **Recursive Crawling**: Visits all links up to a certain depth and filters them based on specified domains (each website is crawled only once)
 - **Broken Link Detection**: Highlights broken links
 - **Markdown File**: The results is stored in a single markdown file (.md extension)
-
+  
+## New Features
+- **Concurrent Crawling**: Same procedure as above but this time each website is processed by a separate thread.
+- **Combined Results**: The results are stored in a single report that retains the original structure of the websites.
+- **Error Handling**: Users are informed by logging the error message in the report, if there are any errors.
+- **Boundaries to Third-Party Libraries**: jsoup HTML parser is one dependency that is used.
 
 ## Project Structure
 

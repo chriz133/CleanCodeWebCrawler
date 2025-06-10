@@ -1,6 +1,5 @@
 package at.aau.crawler.utilities;
 
-import at.aau.crawler.utilities.UrlUtils;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
